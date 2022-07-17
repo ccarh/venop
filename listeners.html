@@ -1,0 +1,35 @@
+
+
+<script>
+// vim: ts=3
+
+
+var VENOP = {};
+
+VENOP.sheet1Url = "https://script.google.com/macros/s/AKfycby-4fK6gfEhY3T6XxriSnB3s_FeP5CMLACDjmuSOHwurCxdTqKsrHPCjcpF0ZiXSAJV0A/exec";
+VENOP.sheet2Url = "https://script.google.com/macros/s/AKfycbxgsC3LXE6NAZYgM9kZRz-SKIxg-cBgtiHI5WTmpCdBcR6voyxIn8VK5ZmJ8Mo4-9W9VQ/exec";
+VENOP.sheet3Url = "https://script.google.com/macros/s/AKfycbz5CZq7icB6xQAoxX4x17CWUBW-ucx8zKViFdY6r3ny-lMP-mtCPq6UJKTfj5zP86-h/exec";
+
+// Sheet 1: Basic parameters
+// Sheet 2: Dramatic genres, musical extras
+// Sheet 3: Libretto catalogs
+
+document.addEventListener("DOMContentLoaded", function () {
+	VENOP.loadTime1 = performance.now();
+	fetch(VENOP.sheet1Url)
+		.then(response => response.json())
+		.then(data => storeData(VENOP, "sheet1", data));
+	fetch(VENOP.sheet2Url)
+		.then(response => response.json())
+		.then(data => storeData(VENOP, "sheet2", data));
+	fetch(VENOP.sheet3Url)
+		.then(response => response.json())
+		.then(data => storeData(VENOP, "sheet3", data));
+});
+
+
+
+</script>
+
+
+

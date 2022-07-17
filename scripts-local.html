@@ -1,0 +1,293 @@
+
+<script>
+// vim: ts=3
+
+
+
+//////////////////////////////
+//
+// storeData --
+//
+
+function storeData(obj, sheet, json) {
+	obj[sheet] = json;
+	if ((typeof obj.sheet1 !== "undefined") &&
+	    (typeof obj.sheet2 !== "undefined") &&
+	    (typeof obj.sheet3 !== "undefined")) {
+		obj.loadTime2 = performance.now();
+		obj.loadDuration = obj.loadTime2 - obj.loadTime1;
+		console.log("VENOP", obj);
+		mergeContents(obj, "data", ["sheet1", "sheet2", "sheet3"]);
+		obj.dataArray = [];
+		for (const property in obj.data) {
+			let element = obj.data[property];
+			obj.dataArray.push(element);
+		}
+		obj.results = obj.dataArray;
+		displaySearchFields(obj.results, "#search-fields");
+		displaySearchResults(obj.results, "#search-results");
+	}
+}
+
+
+
+//////////////////////////////
+//
+// mergeContents --
+//
+
+function mergeContents(obj, target, sheets) {
+	obj[target] = {};
+	for (let i=0; i<sheets.length; i++) {
+		let source = sheets[i];
+		for (let j=0; j<obj[source].length; j++) {
+			let key = obj[source][j].Key;
+			if (typeof key === "undefined") {
+				console.error("Cannot find Key parameter in", obj[source][j]);
+				continue;
+			}
+			if (typeof obj[target][key] === "undefined") {
+				obj[target][key] = {};
+			}
+			for (const property in obj[source][j]) {
+				value = obj[source][j].property;
+				if (typeof obj[target][key][property] !== "undefined") {
+					if (value !== obj[target][key][property]) {
+						console.warn(`FOR KEY >>${key}<< CONTENT DIFFERS FOR PROPERTY >>${source}<<, " WHICH IS NOW >>${value}<< BUT WAS >>${obj[target][key][property]}<<`);
+					}
+				}
+				obj[target][key][property] = obj[source][j][property];
+			}
+		}
+	}
+}
+
+
+//////////////////////////////
+//
+// displaySearchFields -- 
+//
+
+function displaySearchFields(data, target) {
+	let element = document.querySelector(target);
+	if (!target) {
+		console.log("CANNOT FIND TARGET", target, "FOR DISPLAYING SEARCH FIELDS");
+		return;
+	}
+
+	let output = "";
+	output += buildSelect(data, "Composer");
+	output += buildSelect(data, "Theater");
+	
+	element.innerHTML = output;
+}
+
+
+
+//////////////////////////////
+//
+// buildSelectPerson -- {};
+//
+
+function buildSelectPerson(data, source) {
+	let holder = {};
+	for (let i=0; i<data.length; i++) {
+		let d = data[i][source];
+		d = d.replace(/\(.*?\)/g, "");
+		d = d.replace(/\[.*?\]/g, "");
+		d = d.replace(/,? et al\.?/g, "");
+		d = d.replace(/\?/g, "");
+		d = d.replace(/^\s+/, "");
+		d = d.replace(/\s+$/, "");
+		let matches = d.match(/\{(.*?)\}/g);
+		if (matches) {
+			for (let j=0; j<matches.length; j++) {
+				let value = matches[j];
+				value = value.replace(/[{}]/g, "");
+				if (typeof holder[value] === "undefined") {
+					holder[value] = 1;
+				} else {
+					holder[value]++;
+				}
+			}
+		} else {
+			if (typeof holder[d] === "undefined") {
+				holder[d] = 1;
+			} else {
+				holder[d]++;
+			}
+		}
+	}
+
+	let keys = Object.keys(holder).sort();
+	
+	let output = "";
+	output += `<select onchange="doSearch()" data-field="${source}">\n`;
+	output += `<option value="">${source}</option>\n`;
+	for (let i=0; i<keys.length; i++) {
+		output+= `<option value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+	}
+	output += "</select>\n";
+
+	return output;
+}
+
+
+
+
+//////////////////////////////
+//
+// buildSelect --
+//
+
+function buildSelect(data, source) {
+	if (source == "Composer") {
+		return buildSelectPerson(data, source);
+	}
+
+	let holder = {};
+	for (let i=0; i<data.length; i++) {
+		let value = data[i][source];
+		if (typeof holder[value] === "undefined") {
+			holder[value] = 1;
+		} else {
+			holder[value]++;
+		}
+	}
+
+	let keys = Object.keys(holder).sort();
+	
+	let output = "";
+	output += `<select onchange="doSearch()" data-field="${source}">\n`;
+	output += `<option value="">${source}</option>\n`;
+	for (let i=0; i<keys.length; i++) {
+		output+= `<option value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+	}
+	output += "</select>\n";
+
+	return output;
+}
+
+
+
+//////////////////////////////
+//
+// displaySearchResults -- 
+//
+
+function displaySearchResults(results, target) {
+	displayEntryCount(results.length, "#search-count");
+
+	let element = document.querySelector(target);
+	if (!element) {
+		return;
+	}
+
+	let output = "";
+	output += "<table>";
+	output += "<tr>";
+	output += "<th>Key</th>";
+	output += "<th>Work title</th>";
+	output += "<th>Composer</th>";
+	output += "<th>Theater</th>";
+	output += "</tr>";
+
+	for (let i=0; i<results.length; i++) {
+		output += "<tr>";
+		output += `<td>${results[i]["Key"]}</td>`;
+		output += `<td>${results[i]["Work title"]}</td>`;
+		output += `<td>${removeCurly(results[i]["Composer"])}</td>`;
+		output += `<td>${results[i]["Theater"]}</td>`;
+		output += "</tr>";
+	}
+
+	output += "</table>";
+	element.innerHTML = output;
+
+}
+
+
+
+//////////////////////////////
+//
+// removeCurly
+//
+
+function removeCurly(string) {
+	return string.replace(/[{}]/g, "");
+}
+
+
+
+//////////////////////////////
+//
+// doSearch --
+//
+
+function doSearch() {
+	let selects = document.querySelectorAll("#search-fields select");
+	let results = VENOP.dataArray;
+	
+
+	for (let i=0; i<selects.length; i++) {
+		let datavalue = selects[i].dataset.field;
+		results = filterResults(results, selects[i].dataset.field, selects[i].value);
+	}
+
+	displaySearchResults(results, "#search-results");
+	VENOP.results = results;
+}
+
+
+
+//////////////////////////////
+//
+// filterResults --
+//
+
+function filterResults(input, field, query) {
+	if (query === "") {
+		return input;
+	}
+
+	let output = [];
+	for (let i=0; i<input.length; i++) {
+		if (field === "Composer") {
+			if (input[i][field].match(query)) {
+				output.push(input[i]);
+			}
+		} else {
+			if (input[i][field] === query) {
+				output.push(input[i]);
+			}
+		}
+	}
+	return output;
+}
+
+
+
+//////////////////////////////
+//
+// displayEntryCount --
+//
+
+function displayEntryCount(count, target) {
+	let element = document.querySelector(target);
+	if (!element) {
+		return;
+	}
+	let output = count;
+	if (count == 1) {
+		output += " entry";
+	} else{
+		output += " entries";
+	}
+	element.innerHTML = output;
+}
+
+
+</script>
+
+
+
