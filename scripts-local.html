@@ -1,6 +1,6 @@
 
 <script>
-// vim: ts=3:nowrap
+// vim: ts=3:nowrap:ft=javascript
 
 
 
@@ -54,7 +54,7 @@ function mergeContents(obj, target, sheets) {
 				value = obj[source][j].property;
 				if (typeof obj[target][key][property] !== "undefined") {
 					if (value !== obj[target][key][property]) {
-						console.warn(`FOR KEY >>${key}<< CONTENT DIFFERS FOR PROPERTY >>${source}<<, " WHICH IS NOW >>${value}<< BUT WAS >>${obj[target][key][property]}<<`);
+						// console.warn(`FOR KEY >>${key}<< CONTENT DIFFERS FOR PROPERTY >>${source}<<, " WHICH IS NOW >>${value}<< BUT WAS >>${obj[target][key][property]}<<`);
 					}
 				}
 				obj[target][key][property] = obj[source][j][property];
@@ -78,6 +78,7 @@ function displaySearchFields(data, target) {
 	}
 
 	let output = "";
+	output += buildTextSearch("Work title");
 	output += buildSelect(data, "Composer");
 	output += buildSelect(data, "Librettist");
 	output += buildSelect(data, "Theater");
@@ -182,6 +183,18 @@ function buildSelect(data, source) {
 
 //////////////////////////////
 //
+// buildTextSearch --
+//
+
+function buildTextSearch(source) {
+	let output = `<input spellcheck="false" autocomplete="off" autocorrect="off" tyle="text" oninput="doSearch()" placeholder="${source}" data-field="${source}">`;
+	return output;
+}
+
+
+
+//////////////////////////////
+//
 // displaySearchResults -- 
 //
 
@@ -240,12 +253,18 @@ function removeCurly(string) {
 
 function doSearch() {
 	let selects = document.querySelectorAll("#search-fields select");
+	let inputs = document.querySelectorAll("#search-fields input");
 	let results = VENOP.dataArray;
-	
 
 	for (let i=0; i<selects.length; i++) {
-		let datavalue = selects[i].dataset.field;
-		results = filterResults(results, selects[i].dataset.field, selects[i].value);
+		let field = selects[i].dataset.field;
+		let query = selects[i].value;
+		results = filterResults(results, field, query);
+	}
+	for (let i=0; i<inputs.length; i++) {
+		let field = inputs[i].dataset.field;
+		let query = inputs[i].value;
+		results = filterResults(results, field, query);
 	}
 
 	displaySearchResults(results, "#search-results");
@@ -263,6 +282,10 @@ function filterResults(input, field, query) {
 	if (query === "") {
 		return input;
 	}
+	var queryPieces = "";
+	if (field === "Work title") {
+		queryPieces = splitQueryIntoPieces(query);
+	}
 
 	let output = [];
 	for (let i=0; i<input.length; i++) {
@@ -274,11 +297,99 @@ function filterResults(input, field, query) {
 			if (input[i][field].match(query)) {
 				output.push(input[i]);
 			}
+		} else if (field === "Dedicatee") {
+			if (input[i][field].match(query)) {
+				output.push(input[i]);
+			}
+		} else if (field === "Work title") {
+			if (freeTextSearch(input[i][field], queryPieces)) {
+				output.push(input[i]);
+			}
 		} else {
 			if (input[i][field] === query) {
 				output.push(input[i]);
 			}
 		}
+	}
+	return output;
+}
+
+
+
+//////////////////////////////
+//
+// freeTextSearch --
+//
+
+function freeTextSearch(string, queryArray) {
+	string = string.toLowerCase();
+	for (let i=0; i<queryArray.length; i++) {
+		if (queryArray[i] === "") {
+			continue;
+		}
+		if (!string.match(queryArray[i])) {
+			return false;
+		}
+	}
+	return true;
+}
+
+
+
+//////////////////////////////
+//
+// splitQueryIntoPieces == used to allow multiple word searching in titles.
+//    returns an array of the search queryies.
+// 
+
+function splitQueryIntoPieces(input) {
+	if (!input) {
+		return [""];
+	}
+	if (typeof input !== "string") {
+		return [""];
+	}
+
+	input = input.toLowerCase();
+
+	let output = [];
+	let current = "";
+
+	let inQuote = false;
+	for (let i=0; i<input.length; i++) {
+		if (input[i] === '"') {
+			if ((i>0) && (input[i-1] == "\\")) {
+				// regular double quote.
+				current += '"';
+				continue;
+			} else {
+				if (inQuote) {
+					if (current.length > 0) {
+						output.push(current);
+						current = "";
+					}
+				} else {
+					if (current.length > 0) {
+						output.push(current);
+						current = "";
+					}
+				}
+				inQuote = !inQuote;
+				continue;
+			}
+		} else if (/\s/.test(input[i])) {
+			// white space, so switch to a new word
+			if (current.length) {
+				output.push(current);
+				current = "";
+			}
+		} else {
+			// add character to current word
+			current += input[i];
+		}
+	}
+	if (current.length) {
+		output.push(current);
 	}
 	return output;
 }
