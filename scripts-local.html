@@ -81,6 +81,7 @@ function displaySearchFields(data, target) {
 	output += buildTextSearch("Work title");
 	output += buildSelect(data, "Composer");
 	output += buildSelect(data, "Librettist");
+	output += buildSelect(data, "Dedicatee");
 	output += buildSelect(data, "Theater");
 	
 	element.innerHTML = output;
@@ -101,6 +102,9 @@ function buildSelectPerson(data, source) {
 	let holder = {};
 	for (let i=0; i<data.length; i++) {
 		let d = data[i][source];
+		if (!d) {
+			continue;
+		}
 		d = d.replace(/\(.*?\)/g, "");
 		d = d.replace(/\[.*?\]/g, "");
 		d = d.replace(/,? et al\.?/g, "");
@@ -153,6 +157,9 @@ function buildSelect(data, source) {
 		return buildSelectPerson(data, source);
 	}
 	if (source == "Librettist") {
+		return buildSelectPerson(data, source);
+	}
+	if (source == "Dedicatee") {
 		return buildSelectPerson(data, source);
 	}
 
@@ -214,6 +221,7 @@ function displaySearchResults(results, target) {
 	output += "<th>Work title</th>";
 	output += "<th>Composer</th>";
 	output += "<th>Librettist</th>";
+	output += "<th>Dedicatee</th>";
 	output += "<th>Theater</th>";
 	output += "</tr>";
 
@@ -224,6 +232,7 @@ function displaySearchResults(results, target) {
 		output += `<td>${results[i]["Work title"]}</td>`;
 		output += `<td>${removeCurly(results[i]["Composer"])}</td>`;
 		output += `<td>${removeCurly(results[i]["Librettist"])}</td>`;
+		output += `<td>${removeCurly(results[i]["Dedicatee"])}</td>`;
 		output += `<td class="nobreak">${results[i]["Theater"]}</td>`;
 		output += "</tr>";
 	}
@@ -241,6 +250,9 @@ function displaySearchResults(results, target) {
 //
 
 function removeCurly(string) {
+	if (!string) {
+		return "";
+	}
 	return string.replace(/[{}]/g, "");
 }
 
@@ -290,15 +302,15 @@ function filterResults(input, field, query) {
 	let output = [];
 	for (let i=0; i<input.length; i++) {
 		if (field === "Composer") {
-			if (input[i][field].match(query)) {
+			if (input[i][field] && input[i][field].match(query)) {
 				output.push(input[i]);
 			}
 		} else if (field === "Librettist") {
-			if (input[i][field].match(query)) {
+			if (input[i][field] && input[i][field].match(query)) {
 				output.push(input[i]);
 			}
 		} else if (field === "Dedicatee") {
-			if (input[i][field].match(query)) {
+			if (input[i][field] && input[i][field].match(query)) {
 				output.push(input[i]);
 			}
 		} else if (field === "Work title") {
