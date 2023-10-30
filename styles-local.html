@@ -1,26 +1,71 @@
 
 <style>
 
-table th {
+table.opera {
+	margin-top: 50px;
+	border-collapse: collapse;
+	font-family: Tahoma;
+}
+
+table.opera th {
 	text-align: left;
+	background: skyblue;
+	position: sticky;
+	padding-left: 3px;
+	padding-right: 3px;
+	top: 0;
 }
 
-table td {
-	padding-right: 20px;
+table.opera td {
+	padding-right: 3px;
+	padding-left: 3px;
+	border: 1px solid #eee;
+	vertical-align: baseline;
 }
 
-table td.nobreak { 
+table.opera td.nobreak { 
 	white-space: pre;
 
 }
 
-table tr:hover {
+table.opera tr:hover {
 	background: #ff000011;
+}
+
+table.opera td.period {
+	text-align: center;
+}
+
+table.opera th.work-title, table.opera td.work-title {
+	min-width: 200px;
+}
+
+table.opera th.dedicatee, table.opera td.dedicatee {
+	min-width: 200px;
+}
+
+input, select {
+        border: 1px solid #ddd;
+	max-width: 500px;
+        font-size: 1.10rem;
+        margin: 3px;
+        padding: 5px;
+	background: skyblue;
 }
 
 input::placeholder {
 	font-style: italic;
-	color: #aaa;
+	color: white;
+}
+
+option.rest {
+	background: navy;
+	color: white;
+}
+
+option.first {
+	background: skyblue;
+	color: black;
 }
 
 input:focus,
@@ -28,6 +73,16 @@ select:focus,
 textarea:focus,
 button:focus {
     outline: none;
+}
+
+#search-fields {
+	margin: 10px;
+	padding: 10px;
+	border: 3px solid #999;
+}
+
+#search-count {
+	font-size: 1.5rem;
 }
 
 </style>

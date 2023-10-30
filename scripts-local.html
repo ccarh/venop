@@ -9,6 +9,23 @@
 // storeData --
 //
 
+function storeDataSingleSheet(obj, sheet, json) {
+	obj.dataArray = json;
+	obj.data = {};
+console.warn("OBJ", obj);
+console.warn("OBJ.dataArray", obj.dataArray);
+	for (let i=0; i<obj.dataArray.length; i++) {
+		let entry = obj.dataArray[i];
+		entry.Key = entry["Ordinal No."];
+		entry.Theater = "Sant'Angelo";
+		entry.Theater = "Sant'Angelo";
+		obj.data[entry.Key] = entry;
+	}
+	obj.results = obj.dataArray;
+	displaySearchFields(obj.results, "#search-fields");
+	displaySearchResults(obj.results, "#search-results");
+}
+
 function storeData(obj, sheet, json) {
 	obj[sheet] = json;
 	if ((typeof obj.sheet1 !== "undefined") &&
@@ -82,6 +99,15 @@ function displaySearchFields(data, target) {
 	output += buildSelect(data, "Composer");
 	output += buildSelect(data, "Librettist");
 	output += buildSelect(data, "Dedicatee");
+	output += buildSelect(data, "Civic allegiance");
+	output += buildSelect(data, "Residence");
+	output += buildSelect(data, "Score");
+	output += buildSelect(data, "Misc. arias");
+	output += buildSelect(data, "Balli");
+	output += buildSelect(data, "Intermezzi (comic)");
+	output += buildSelect(data, "Dramatic genre");
+	output += buildSelect(data, "Season");
+	output += buildSelect(data, "Period");
 	output += buildSelect(data, "Theater");
 	
 	element.innerHTML = output;
@@ -135,9 +161,12 @@ function buildSelectPerson(data, source) {
 	
 	let output = "";
 	output += `<select onchange="doSearch()" data-field="${source}">\n`;
-	output += `<option value="">${source}</option>\n`;
+	output += `<option class="first" value="">${source}</option>\n`;
 	for (let i=0; i<keys.length; i++) {
-		output+= `<option value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+		if (keys[i] === undefined) {
+			continue;
+		}
+		output += `<option class="rest" value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
 	}
 	output += "</select>\n";
 
@@ -214,26 +243,46 @@ function displaySearchResults(results, target) {
 	}
 
 	let output = "";
-	output += "<table>";
-	output += "<tr>";
-	output += "<th>Key</th>";
-	output += "<th>Sorting date</th>";
-	output += "<th>Work title</th>";
-	output += "<th>Composer</th>";
-	output += "<th>Librettist</th>";
-	output += "<th>Dedicatee</th>";
-	output += "<th>Theater</th>";
+	output += "<table class='opera'>";
+	output += "<tr class='sticky'>";
+	output += "<th class='key'>Key</th>";
+	// output += "<th>Sorting date</th>";
+	output += "<th class='work'>Work title</th>";
+	output += "<th class='composer'>Composer</th>";
+	output += "<th class='librettist'>Librettist</th>";
+	output += "<th class='dedicatee'>Dedicatee</th>";
+	output += "<th class='civic-allegiance'>Civic allegiance</th>";
+	output += "<th class='residence'>Residence</th>";
+	output += "<th class='score'>Score</th>";
+	output += "<th class='misc-arias'>Misc. arias</th>";
+	output += "<th class='balli'>Balli</th>";
+	output += "<th class='intermezzi-comic'>Intermezzi (comic)</th>";
+	output += "<th class='dramatic-genre'>Dramatic genre</th>";
+	output += "<th class='season'>Season</th>";
+	output += "<th class='period'>Period</th>";
+
+
+	// output += "<th>Theater</th>";
 	output += "</tr>";
 
 	for (let i=0; i<results.length; i++) {
 		output += "<tr>";
-		output += `<td>${results[i]["Key"]}</td>`;
-		output += `<td class="nobreak">${results[i]["Sorting date"]}</td>`;
-		output += `<td>${results[i]["Work title"]}</td>`;
-		output += `<td>${removeCurly(results[i]["Composer"])}</td>`;
-		output += `<td>${removeCurly(results[i]["Librettist"])}</td>`;
-		output += `<td>${removeCurly(results[i]["Dedicatee"])}</td>`;
-		output += `<td class="nobreak">${results[i]["Theater"]}</td>`;
+		output += `<td class="key">${results[i]["Key"] || ""}</td>`;
+		// output += `<td class="nobreak">${results[i]["Sorting date"]}</td>`;
+		output += `<td class="work-title">${results[i]["Work title"] || ""}</td>`;
+		output += `<td class="cmoposer">${removeCurly(results[i]["Composer"] || "")}</td>`;
+		output += `<td class="librettist">${removeCurly(results[i]["Librettist"] || "")}</td>`;
+		output += `<td class="dedicatee">${removeCurly(results[i]["Dedicatee"] || "")}</td>`;
+		output += `<td class="civic-allegiance">${results[i]["Civic allegiance"] || ""}</td>`;
+		output += `<td class="residence">${results[i]["Residence"] || ""}</td>`;
+		output += `<td class="score">${results[i]["Score"] || ""}</td>`;
+		output += `<td class="misc-arias">${results[i]["Misc. arias"] || ""}</td>`;
+		output += `<td class="balli">${results[i]["Balli"] || ""}</td>`;
+		output += `<td class="intermezzi-comic">${results[i]["Intermezzi (comic)"] || ""}</td>`;
+		output += `<td class="dramatic-genre">${results[i]["Dramatic genre"] || ""}</td>`;
+		output += `<td class="season">${results[i]["Season"] || ""}</td>`;
+		output += `<td class="period">${results[i]["Period"] || ""}</td>`;
+		// output += `<td class="nobreak">${results[i]["Theater"]}</td>`;
 		output += "</tr>";
 	}
 

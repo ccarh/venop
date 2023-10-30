@@ -9,7 +9,7 @@ layout: home
 {% include_relative styles-local.html %}
 {% include_relative listeners.html %}
 
-<h1> Venetian Opera </h1>
+<h1> Venetian Opera (Theater Sant'Angelo) </h1>
 
 <div id="search-fields"></div>
 
