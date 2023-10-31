@@ -12,19 +12,24 @@
 function storeDataSingleSheet(obj, sheet, json) {
 	obj.dataArray = json;
 	obj.data = {};
-console.warn("OBJ", obj);
-console.warn("OBJ.dataArray", obj.dataArray);
 	for (let i=0; i<obj.dataArray.length; i++) {
 		let entry = obj.dataArray[i];
 		entry.Key = entry["Ordinal No."];
 		entry.Theater = "Sant'Angelo";
 		entry.Theater = "Sant'Angelo";
+		if (entry.Score) {
+			entry.Score = entry.Score.replace(/scores?:?/gi, "");
+		}
+		if (entry["Misc. arias"]) {
+			entry["Misc. arias"] = entry["Misc. arias"].replace(/arias?:?/gi, "");
+		}
 		obj.data[entry.Key] = entry;
 	}
 	obj.results = obj.dataArray;
 	displaySearchFields(obj.results, "#search-fields");
 	displaySearchResults(obj.results, "#search-results");
 }
+
 
 function storeData(obj, sheet, json) {
 	obj[sheet] = json;
@@ -109,10 +114,46 @@ function displaySearchFields(data, target) {
 	output += buildSelect(data, "Season");
 	output += buildSelect(data, "Period");
 	output += buildSelect(data, "Theater");
+	output += createClearButton();
 	
 	element.innerHTML = output;
 }
 
+
+
+//////////////////////////////
+//
+// createClearButton --
+//
+
+function createClearButton() {
+	let output = "";
+	output += '<span class="button" onclick="resetSearchFields()">Clear</span>';
+	return output;
+}
+
+
+
+//////////////////////////////
+//
+// resetSearchFields --
+//
+
+function resetSearchFields() {
+	let element = document.querySelector("#search-fields");
+	if (!element) {
+		return;
+	}
+	let selects = element.querySelectorAll("select");
+	for (let i=0; i<selects.length; i++) {
+		selects[i].value = "";
+	}
+	let inputs = element.querySelectorAll("input");
+	for (let i=0; i<inputs.length; i++) {
+		inputs[i].value = "";
+	}
+	doSearch();
+}
 
 
 //////////////////////////////
@@ -245,50 +286,96 @@ function displaySearchResults(results, target) {
 	let output = "";
 	output += "<table class='opera'>";
 	output += "<tr class='sticky'>";
-	output += "<th class='key'>Key</th>";
-	// output += "<th>Sorting date</th>";
-	output += "<th class='work'>Work title</th>";
-	output += "<th class='composer'>Composer</th>";
-	output += "<th class='librettist'>Librettist</th>";
-	output += "<th class='dedicatee'>Dedicatee</th>";
-	output += "<th class='civic-allegiance'>Civic allegiance</th>";
-	output += "<th class='residence'>Residence</th>";
-	output += "<th class='score'>Score</th>";
-	output += "<th class='misc-arias'>Misc. arias</th>";
-	output += "<th class='balli'>Balli</th>";
-	output += "<th class='intermezzi-comic'>Intermezzi (comic)</th>";
-	output += "<th class='dramatic-genre'>Dramatic genre</th>";
-	output += "<th class='season'>Season</th>";
-	output += "<th class='period'>Period</th>";
-
+	output += `<th class='key' onclick='sortBy("Key")' title='sort by Key'>Key</th>`;
+	// output += `<th onclick="sortBy('Sorting date')' title="sort by Sorting date'>Sorting date</th>`;
+	output += `<th onclick="sortBy('Work title')" title='sort by Work title' class='work'>Work title</th>`;
+	output += `<th onclick="sortBy('Composer')" title='sort by Composer' class='composer'>Composer</th>`;
+	output += `<th onclick="sortBy('Librettist')" title='sort by Librettist' class='librettist'>Librettist</th>`;
+	output += `<th onclick="sortBy('Dedicatee')" title='sort by Dedicatee' class='dedicatee'>Dedicatee</th>`;
+	output += `<th onclick="sortBy('Civic allegiance')" title='sort by Civic allegiance' class='civic-allegiance'>Civic allegiance</th>`;
+	output += `<th onclick="sortBy('Residence')" title='sort by Residence' class='residence'>Residence</th>`;
+	output += `<th onclick="sortBy('Score')" title='sort by Score' class='score'>Score</th>`;
+	output += `<th onclick="sortBy('Misc. arias')" title='sort by Misc. arias' class='misc-arias'>Misc. arias</th>`;
+	output += `<th onclick="sortBy('Balli')" title='sort by Balli' class='balli'>Balli</th>`;
+	output += `<th onclick="sortBy('Intermezzi (comic)')" title='sort by Intermezzi' class='intermezzi-comic'>Intermezzi (comic)</th>`;
+	output += `<th onclick="sortBy('Dramatic genre')" title='sort by Dramatic genre' class='dramatic-genre'>Dramatic genre</th>`;
+	output += `<th onclick="sortBy('Season')" title='sort by Season' class='season'>Season</th>`;
+	output += `<th onclick="sortBy('Period')" title='sort by Period' onclick="sortBy('Period')" class='period'>Period</th>`;
 
 	// output += "<th>Theater</th>";
 	output += "</tr>";
 
 	for (let i=0; i<results.length; i++) {
 		output += "<tr>";
-		output += `<td class="key">${results[i]["Key"] || ""}</td>`;
-		// output += `<td class="nobreak">${results[i]["Sorting date"]}</td>`;
-		output += `<td class="work-title">${results[i]["Work title"] || ""}</td>`;
-		output += `<td class="cmoposer">${removeCurly(results[i]["Composer"] || "")}</td>`;
-		output += `<td class="librettist">${removeCurly(results[i]["Librettist"] || "")}</td>`;
-		output += `<td class="dedicatee">${removeCurly(results[i]["Dedicatee"] || "")}</td>`;
-		output += `<td class="civic-allegiance">${results[i]["Civic allegiance"] || ""}</td>`;
-		output += `<td class="residence">${results[i]["Residence"] || ""}</td>`;
-		output += `<td class="score">${results[i]["Score"] || ""}</td>`;
-		output += `<td class="misc-arias">${results[i]["Misc. arias"] || ""}</td>`;
-		output += `<td class="balli">${results[i]["Balli"] || ""}</td>`;
-		output += `<td class="intermezzi-comic">${results[i]["Intermezzi (comic)"] || ""}</td>`;
-		output += `<td class="dramatic-genre">${results[i]["Dramatic genre"] || ""}</td>`;
-		output += `<td class="season">${results[i]["Season"] || ""}</td>`;
-		output += `<td class="period">${results[i]["Period"] || ""}</td>`;
-		// output += `<td class="nobreak">${results[i]["Theater"]}</td>`;
+		output += `<td class="key" >${results[i]["Key"] || ""}</td>`;
+		// output += `<td class="nobreak" >${results[i]["Sorting date"]}</td>`;
+		output += `<td class="work-title" >${results[i]["Work title"] || ""}</td>`;
+		output += `<td class="cmoposer" >${removeCurly(results[i]["Composer"] || "")}</td>`;
+		output += `<td class="librettist" >${removeCurly(results[i]["Librettist"] || "")}</td>`;
+		output += `<td class="dedicatee" >${removeCurly(results[i]["Dedicatee"] || "")}</td>`;
+		output += `<td class="civic-allegiance" >${results[i]["Civic allegiance"] || ""}</td>`;
+		output += `<td class="residence" >${results[i]["Residence"] || ""}</td>`;
+		output += `<td class="score" >${results[i]["Score"] || ""}</td>`;
+		output += `<td class="misc-arias" >${results[i]["Misc. arias"] || ""}</td>`;
+		output += `<td class="balli" >${results[i]["Balli"] || ""}</td>`;
+		output += `<td class="intermezzi-comic" >${results[i]["Intermezzi (comic)"] || ""}</td>`;
+		output += `<td class="dramatic-genre" >${results[i]["Dramatic genre"] || ""}</td>`;
+		output += `<td class="season" >${results[i]["Season"] || ""}</td>`;
+		output += `<td class="period" >${results[i]["Period"] || ""}</td>`;
+		// output += `<td class="nobreak" >${results[i]["Theater"]}</td>`;
 		output += "</tr>";
 	}
 
 	output += "</table>";
 	element.innerHTML = output;
 
+}
+
+
+
+///////////////////////////////
+//
+// sortBy --
+//
+
+function sortBy(field) {
+	if (field === "Period") {
+		// sort numerically:
+		VENOP.dataArray.sort(function(a, b) {
+			let string1 = a[field];
+			let string2 = b[field];
+			if (!string1 && !string2) {
+				return 0;
+			}
+			if (!string1) {
+				return +1;
+			}
+			if (!string2) {
+				return -1;
+			}
+			let num1 = parseInt(string1) || 1000000;
+			let num2 = parseInt(string2) || 1000000;
+			return num1 - num2;
+		});
+	} else {
+		VENOP.dataArray.sort(function(a, b) {
+			let string1 = a[field];
+			let string2 = b[field];
+			if (!string1 && !string2) {
+				return 0;
+			}
+			if (!string1) {
+				return +1;
+			}
+			if (!string2) {
+				return -1;
+			}
+			string1 = string1.replace(/["'(]/g, "");
+			string2 = string2.replace(/["']/g, "");
+			return string1.localeCompare(string2);
+		});
+	}
+	doSearch();
 }
 
 
