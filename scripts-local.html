@@ -343,7 +343,7 @@ function displaySearchResults(results, target) {
 
 	output += "</table>";
 	element.innerHTML = output;
-
+	adjustColumnVisibility();
 }
 
 
@@ -416,7 +416,7 @@ function removeCurly(string) {
 
 function doSearch() {
 	let selects = document.querySelectorAll("#search-fields select");
-	let inputs = document.querySelectorAll("#search-fields input");
+	let inputs = document.querySelectorAll('#search-fields input:not([type="checkbox"])');
 	let results = VENOP.dataArray;
 
 	for (let i=0; i<selects.length; i++) {
@@ -589,7 +589,6 @@ function adjustColumnVisibility() {
 	for (let i=0; i<checkboxes.length; i++) {
 		let source = checkboxes[i].dataset.source;
 		let state = checkboxes[i].checked;
-console.warn("SOURCE", checkboxes[i], source, state);
 		adjustColumnVisibility2(source, state);
 	} 
 }
@@ -612,8 +611,6 @@ function adjustColumnVisibility2(source, state) {
 		}
 	}
 }
-
-
 
 
 </script>
