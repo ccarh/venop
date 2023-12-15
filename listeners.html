@@ -6,7 +6,13 @@
 
 var VENOP = {};
 
-VENOP.macroid = "AKfycbzhIFJ0hUelyPzsZ7auUHcP6GXNIO4CB__7aW9W2hMggZYShY1EWmVrplvyrj-kFCnr";
+VENOP.columns = [];
+
+// San'Angelo sheet only:
+// VENOP.macroid = "AKfycbzhIFJ0hUelyPzsZ7auUHcP6GXNIO4CB__7aW9W2hMggZYShY1EWmVrplvyrj-kFCnr";
+
+// Pruned sheet:
+VENOP.macroid = "AKfycbyLVIgeHmOn5yYnSgBbR1OjBTVUONmQFtAyBbPw1mekN4_qYL58947E8cN48NJwV91g";
 
 VENOP.sheet0Url = `https://script.google.com/macros/s/${VENOP.macroid}/exec?sheet=saint-angelo`;
 
@@ -41,6 +47,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		.then(data => storeDataSingleSheet(VENOP, "sheet0", data));
 });
 
+
+function processColumn(event) {
+	adjustColumnVisibility();
+}
 
 </script>
 
