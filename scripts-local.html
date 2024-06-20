@@ -15,8 +15,8 @@ function storeDataSingleSheet(obj, sheet, json) {
 	for (let i=0; i<obj.dataArray.length; i++) {
 		let entry = obj.dataArray[i];
 		entry.Key = entry["Ordinal No."];
-		entry.Theater = "Sant'Angelo";
-		entry.Theater = "Sant'Angelo";
+		// entry.Theater = "Sant'Angelo";
+		// entry.Theater = "Sant'Angelo";
 		if (entry.Score) {
 			entry.Score = entry.Score.replace(/scores?:?/gi, "");
 		}
@@ -24,6 +24,7 @@ function storeDataSingleSheet(obj, sheet, json) {
 			entry["Misc. arias"] = entry["Misc. arias"].replace(/arias?:?/gi, "");
 		}
 		obj.data[entry.Key] = entry;
+console.warn("ENTRY", entry);
 	}
 	obj.results = obj.dataArray;
 	displaySearchFields(obj.results, "#search-fields");
@@ -302,22 +303,22 @@ function displaySearchResults(results, target) {
 	output += "<table class='opera'>";
 
 	output += "<tr class='sticky'>";
-	output += `<th data-source="Key"                 onclick='sortBy("Key")'                 title="sort by Key"                 class="key"                >Key                </th>`;
-	output += `<th data-source="Sorting date"        onclick="sortBy('Sorting date')'        title="sort by Sorting date"        class="sorting-date"       >Sorting date       </th>`;
-	output += `<th data-source="Work title"          onclick="sortBy('Work title')"          title="sort by Work title"          class="work"               >Work title         </th>`;
-	output += `<th data-source="Theater"             onclick="sortBy('Theater')"             title="sort by Theater"             class="theater"            >Theater            </th>`;
-	output += `<th data-source="Composer"            onclick="sortBy('Composer')"            title="sort by Composer"            class="composer"           >Composer           </th>`;
-	output += `<th data-source="Librettist"          onclick="sortBy('Librettist')"          title="sort by Librettist"          class="librettist"         >Librettist         </th>`;
-	output += `<th data-source="Dedicatee"           onclick="sortBy('Dedicatee')"           title="sort by Dedicatee"           class="dedicatee"          >Dedicatee          </th>`;
-	output += `<th data-source="Dedicatee residence" onclick="sortBy('Dedicatee residence')" title="sort by Dedicatee residence" class="dedicatee-residence">Dedicatee residence</th>`;
-	// output += `<th data-source="Dedicatee map"       onclick="sortBy('Dedicatee map')"       title="sort by Dedicatee map"       class="residence"          >Dedicatee map      </th>`;
-	output += `<th data-source="Score"               onclick="sortBy('Score')"               title="sort by Score"               class="score"              >Score              </th>`;
-	output += `<th data-source="Misc. arias"         onclick="sortBy('Misc. arias')"         title="sort by Misc. arias"         class="misc-arias"         >Misc. arias        </th>`;
-	output += `<th data-source="Balli"               onclick="sortBy('Balli')"               title="sort by Balli"               class="balli"              >Balli              </th>`;
-	output += `<th data-source="Intermezzi (comic)"  onclick="sortBy('Intermezzi (comic)')"  title="sort by Intermezzi"          class="intermezzi-comic"   >Intermezzi (comic) </th>`;
-	output += `<th data-source="Dramatic genre"      onclick="sortBy('Dramatic genre')"      title="sort by Dramatic genre"      class="dramatic-genre"     >Dramatic genre     </th>`;
-	output += `<th data-source="Season"              onclick="sortBy('Season')"              title="sort by Season"              class="season"             >Season             </th>`;
-	output += `<th data-source="Modern year"         onclick="sortBy('Modern year')"         title="sort by Modern year"         class="modern-year"        >Modern year        </th>`;
+	output += `<th data-source="Key"                 onclick='sortBy("Key")'                 title="sort by Key"                 class="resizable key"                >Key                </th>`;
+	output += `<th data-source="Sorting date"        onclick="sortBy('Sorting date')'        title="sort by Sorting date"        class="resizable sorting-date"       >Sorting date       </th>`;
+	output += `<th data-source="Work title"          onclick="sortBy('Work title')"          title="sort by Work title"          class="resizable work"               >Work title         </th>`;
+	output += `<th data-source="Theater"             onclick="sortBy('Theater')"             title="sort by Theater"             class="resizable theater"            >Theater            </th>`;
+	output += `<th data-source="Composer"            onclick="sortBy('Composer')"            title="sort by Composer"            class="resizable composer"           >Composer           </th>`;
+	output += `<th data-source="Librettist"          onclick="sortBy('Librettist')"          title="sort by Librettist"          class="resizable librettist"         >Librettist         </th>`;
+	output += `<th data-source="Dedicatee"           onclick="sortBy('Dedicatee')"           title="sort by Dedicatee"           class="resizable dedicatee"          >Dedicatee          </th>`;
+	output += `<th data-source="Dedicatee residence" onclick="sortBy('Dedicatee residence')" title="sort by Dedicatee residence" class="resizable dedicatee-residence">Dedicatee residence</th>`;
+	// output += `<th data-source="Dedicatee map"       onclick="sortBy('Dedicatee map')"       title="sort by Dedicatee map"       class="resizable residence"          >Dedicatee map      </th>`;
+	output += `<th data-source="Score"               onclick="sortBy('Score')"               title="sort by Score"               class="resizable score"              >Score              </th>`;
+	output += `<th data-source="Misc. arias"         onclick="sortBy('Misc. arias')"         title="sort by Misc. arias"         class="resizable misc-arias"         >Misc. arias        </th>`;
+	output += `<th data-source="Balli"               onclick="sortBy('Balli')"               title="sort by Balli"               class="resizable balli"              >Balli              </th>`;
+	output += `<th data-source="Intermezzi (comic)"  onclick="sortBy('Intermezzi (comic)')"  title="sort by Intermezzi"          class="resizable intermezzi-comic"   >Intermezzi (comic) </th>`;
+	output += `<th data-source="Dramatic genre"      onclick="sortBy('Dramatic genre')"      title="sort by Dramatic genre"      class="resizable dramatic-genre"     >Dramatic genre     </th>`;
+	output += `<th data-source="Season"              onclick="sortBy('Season')"              title="sort by Season"              class="resizable season"             >Season             </th>`;
+	output += `<th data-source="Modern year"         onclick="sortBy('Modern year')"         title="sort by Modern year"         class="resizable modern-year"        >Modern year        </th>`;
 	output += "</tr>";
 
 	for (let i=0; i<results.length; i++) {
