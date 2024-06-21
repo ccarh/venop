@@ -11,6 +11,8 @@ layout: home
 
 <h1> Venetian Opera </h1>
 
+<div id="documentation"><a target="_blank" href="https://wiki.ccarh.org/wiki/Venetian_Opera_Documentation">Documentation</a></div>
+
 <div id="search-fields"></div>
 
 <div id="search-count"></div>

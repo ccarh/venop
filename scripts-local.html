@@ -24,7 +24,7 @@ function storeDataSingleSheet(obj, sheet, json) {
 			entry["Misc. arias"] = entry["Misc. arias"].replace(/arias?:?/gi, "");
 		}
 		obj.data[entry.Key] = entry;
-console.warn("ENTRY", entry);
+		// console.warn("ENTRY", entry);
 	}
 	obj.results = obj.dataArray;
 	displaySearchFields(obj.results, "#search-fields");
@@ -151,12 +151,44 @@ function resetSearchFields() {
 	let selects = element.querySelectorAll("select");
 	for (let i=0; i<selects.length; i++) {
 		selects[i].value = "";
+		selects[i].classList.remove("active");
 	}
 	let inputs = element.querySelectorAll("input");
 	for (let i=0; i<inputs.length; i++) {
 		inputs[i].value = "";
+		inputs[i].classList.remove("active");
 	}
 	doSearch();
+}
+
+
+
+//////////////////////////////
+//
+// checkActiveSearchFields --
+//
+
+function checkAtiveSearchFields() {
+	let element = document.querySelector("#search-fields");
+	if (!element) {
+		return;
+	}
+	let selects = element.querySelectorAll("select");
+	for (let i=0; i<selects.length; i++) {
+		if (selects[i].value === "") {
+			selects[i].classList.remove("active");
+		} else {
+			selects[i].classList.add("active");
+		}
+	}
+	let inputs = element.querySelectorAll("input");
+	for (let i=0; i<inputs.length; i++) {
+		if (inputs[i].value === "") {
+			inputs[i].classList.remove("active");
+		} else {
+			inputs[i].classList.add("active");
+		}
+	}
 }
 
 
@@ -194,6 +226,9 @@ function buildSelectPerson(data, source) {
 				}
 			}
 		} else {
+			if (!d) {
+				console.warn("Cannot find", data[i][source], "VALUE", d, "SOURCE", source);
+			}
 			if (typeof holder[d] === "undefined") {
 				holder[d] = 1;
 			} else {
@@ -209,6 +244,7 @@ function buildSelectPerson(data, source) {
 	output += `<option class="first" value="">${source}</option>\n`;
 	for (let i=0; i<keys.length; i++) {
 		if (keys[i] === undefined) {
+			console.warn("KEY", i, "IS UNDEFINED");
 			continue;
 		}
 		output += `<option class="rest" value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
@@ -230,7 +266,7 @@ function buildSelect(data, source) {
 	VENOP.columns.push(source);
 	let output = "";
 	output += "<div style='display:inline-block; white-space: nowrap'>";
-	output += `<input onclick="processColumn(event)" data-source="${source}" type="checkbox" checked>`;
+	output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" type="checkbox" checked>`;
 
 	if (source == "Composer") {
 		output += buildSelectPerson(data, source);
@@ -304,7 +340,7 @@ function displaySearchResults(results, target) {
 
 	output += "<tr class='sticky'>";
 	output += `<th data-source="Key"                 onclick='sortBy("Key")'                 title="sort by Key"                 class="resizable key"                >Key                </th>`;
-	output += `<th data-source="Sorting date"        onclick="sortBy('Sorting date')'        title="sort by Sorting date"        class="resizable sorting-date"       >Sorting date       </th>`;
+	output += `<th data-source="Sorting date"        onclick="sortBy('Sorting date')'        title="sort by Sorting date"        class="resizable nobreak sorting-date"       >Sorting date       </th>`;
 	output += `<th data-source="Work title"          onclick="sortBy('Work title')"          title="sort by Work title"          class="resizable work"               >Work title         </th>`;
 	output += `<th data-source="Theater"             onclick="sortBy('Theater')"             title="sort by Theater"             class="resizable theater"            >Theater            </th>`;
 	output += `<th data-source="Composer"            onclick="sortBy('Composer')"            title="sort by Composer"            class="resizable composer"           >Composer           </th>`;
@@ -416,6 +452,7 @@ function removeCurly(string) {
 //
 
 function doSearch() {
+	checkAtiveSearchFields();
 	let selects = document.querySelectorAll("#search-fields select");
 	let inputs = document.querySelectorAll('#search-fields input:not([type="checkbox"])');
 	let results = VENOP.dataArray;
@@ -603,7 +640,7 @@ function adjustColumnVisibility() {
 
 function adjustColumnVisibility2(source, state) {
 	let elements = document.querySelectorAll(`td[data-source="${source}"], th[data-source="${source}"]`);
-	console.log("TD ELEMENTS", elements);
+	// console.log("TD ELEMENTS", elements);
 	for (let i=0; i<elements.length; i++) {
 		if (state) {
 			elements[i].style.display = "table-cell";
