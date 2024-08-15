@@ -118,9 +118,24 @@ function displaySearchFields(data, target) {
 	output += buildSelect(data, "Dramatic genre");
 	output += buildSelect(data, "Season");
 	output += buildSelect(data, "Modern year");
+	output += buildYearRange();
 	output += createClearButton();
 	
 	element.innerHTML = output;
+}
+
+
+
+///////////////////////////////
+//
+// buildYearRange --
+//
+
+function buildYearRange() {
+	output = "";
+	output += `<input oninput="doSearch()" id="yearmin" type="text" class="text-box" placeholder="start year">`;
+	output += `<input oninput="doSearch()" id="yearmax" type="text" class="text-box" placeholder="end year">`;
+	return output;
 }
 
 
@@ -457,21 +472,84 @@ function doSearch() {
 	let inputs = document.querySelectorAll('#search-fields input:not([type="checkbox"])');
 	let results = VENOP.dataArray;
 
+console.error("STARTING RESULTS", results);
+
 	for (let i=0; i<selects.length; i++) {
 		let field = selects[i].dataset.field;
 		let query = selects[i].value;
 		results = filterResults(results, field, query);
 	}
+
+
 	for (let i=0; i<inputs.length; i++) {
 		let field = inputs[i].dataset.field;
+		if (!field) {
+			continue;
+		}
 		let query = inputs[i].value;
 		results = filterResults(results, field, query);
 	}
+
+	results = filterByYearRange(results);
 
 	displaySearchResults(results, "#search-results");
 	VENOP.results = results;
 }
 
+
+
+//////////////////////////////
+//
+// filterByYearRange --
+//
+
+function filterByYearRange(results) {
+console.log("INPUT RESULTS", results);
+	let minyearValue = document.querySelector("#yearmin").value;
+	let maxyearValue = document.querySelector("#yearmax").value;
+	if (minyearValue.match(/^\s*$/) && maxyearValue.match(/^\s*$/)) {
+		return results;
+	}
+	let minyear = 0;
+	let maxyear = 3000;
+	let matches = minyearValue.match(/(1\d{3})/);
+	if (matches) {
+		minyear = parseInt(matches[1]);
+	}
+	matches = maxyearValue.match(/(1\d{3})/);
+	if (matches) {
+		maxyear = parseInt(matches[1]);
+	}
+	if ((minyear == 0) && (maxyear == 3000)) {
+		return results;
+	}
+	if (maxyear < minyear) {
+		let temp = maxyear;
+		maxyear = minyear;
+		minyear = temp;
+	}
+
+console.warn("MINYEAR", minyear, "MAXYEAR", maxyear);
+
+	let newResults = [];
+	for (let i=0; i<results.length; i++) {
+		let sortingDate = results[i]["Sorting date"];
+		if (!sortingDate) {
+			continue;
+		}
+		let matches =  sortingDate.match(/(1\d{3})/);
+		if (matches) {
+			let year = parseInt(matches[1]);
+console.warn("YEAR", year);
+			if ((year >= minyear) && (year <= maxyear)) {
+				newResults.push(results[i]);
+			}
+		}
+	}
+	console.log("NEW RESULTS", newResults);
+	return newResults;
+}
+	
 
 
 //////////////////////////////
