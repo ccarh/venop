@@ -14,7 +14,8 @@ function storeDataSingleSheet(obj, sheet, json) {
 	obj.data = {};
 	for (let i=0; i<obj.dataArray.length; i++) {
 		let entry = obj.dataArray[i];
-		entry.Key = entry["Ordinal No."];
+		// entry.Key = entry["Ordinal No."];
+		entry.Key = entry["Sorting date"];
 		// entry.Theater = "Sant'Angelo";
 		// entry.Theater = "Sant'Angelo";
 		if (entry.Score) {
@@ -22,6 +23,13 @@ function storeDataSingleSheet(obj, sheet, json) {
 		}
 		if (entry["Misc. arias"]) {
 			entry["Misc. arias"] = entry["Misc. arias"].replace(/arias?:?/gi, "");
+		}
+		if (entry["Sorting date"]) {
+			let matches = entry["Sorting date"].match(/(1\d{3})/);
+			if (matches) {
+				entry["Min. year"] = matches[1];
+				entry["Max. year"] = matches[1];
+			}
 		}
 		obj.data[entry.Key] = entry;
 		// console.warn("ENTRY", entry);
@@ -104,11 +112,12 @@ function displaySearchFields(data, target) {
 
 	let output = "";
 	output += buildTextSearch("Work title");
+	output += buildSelect(data, "Sorting date");
 	output += buildSelect(data, "Theater");
 	output += buildSelect(data, "Composer");
 	output += buildSelect(data, "Librettist");
-	output += buildSelect(data, "Sorting date");
 	output += buildSelect(data, "Dedicatee");
+	output += buildSelect(data, "Dedicatee jurisdiction");
 	output += buildSelect(data, "Dedicatee residence");
 	// output += buildSelect(data, "Dedicatee map");
 	output += buildSelect(data, "Score");
@@ -118,9 +127,11 @@ function displaySearchFields(data, target) {
 	output += buildSelect(data, "Dramatic genre");
 	output += buildSelect(data, "Season");
 	output += buildSelect(data, "Modern year");
-	output += buildYearRange();
+	output += buildSelect(data, "Min. year");
+	output += buildSelect(data, "Max. year");
+	// output += buildYearRange();
 	output += createClearButton();
-	
+
 	element.innerHTML = output;
 }
 
@@ -207,6 +218,121 @@ function checkAtiveSearchFields() {
 }
 
 
+
+//////////////////////////////
+//
+// buildSelect --
+//
+
+function buildSelect(data, source) {
+	VENOP.columns.push(source);
+	let output = "";
+	output += "<div style='display:inline-block; white-space: nowrap'>";
+	if (!((source == "Min. year") || (source == "Max. year"))) {
+		output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" type="checkbox" checked>`;
+	}
+
+	if (source == "Composer") {
+		output += buildSelectPerson(data, source);
+		output += "</div>";
+		return output;
+	}
+	if (source == "Librettist") {
+		output += buildSelectPerson(data, source);
+		output += "</div>";
+		return output;
+	}
+	if (source == "Dedicatee") {
+		output += buildSelectPerson(data, source);
+		output += "</div>";
+		return output;
+	}
+	if (source == "Score") {
+		output += buildSelectScore(data, source);
+		output += "</div>";
+		return output;
+	}
+
+	let holder = {};
+	for (let i=0; i<data.length; i++) {
+		let value = data[i][source];
+		if (typeof holder[value] === "undefined") {
+			holder[value] = 1;
+		} else {
+			holder[value]++;
+		}
+	}
+
+	let keys = Object.keys(holder).sort();
+	if (source == "Max. year") {
+		keys.reverse();
+	}
+
+	output += `<select onchange="doSearch()" `;
+	if (source == "Min. year") {
+		output += ` id="yearmin"`;
+	} else if (source == "Max. year") {
+		output += ` id="yearmax"`;
+	}
+
+	output += `data-field="${source}">\n`;
+	output += `<option value="">${source}</option>\n`;
+	for (let i=0; i<keys.length; i++) {
+		output+= `<option value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+	}
+	output += "</select>\n";
+	output += "</div>";
+
+	return output;
+}
+
+
+
+//////////////////////////////
+//
+// buildSelectScore -- Extract sigla from "Score" column data.
+//
+
+function buildSelectScore(data, source) {
+	let holder = {};
+	for (let i=0; i<data.length; i++) {
+		let d = data[i][source];
+		if (!d) {
+			continue;
+		}
+		let matches = d.match(/\b[A-Z]+-[A-ZÜÖÄ]+[a-züöä]*\b/g);
+		if (matches) {
+			for (let i=0; i<matches.length; i++) {
+				if (!holder[matches[i]]) {
+					holder[matches[i]] = 1;
+				} else {
+					holder[matches[i]]++;
+				}
+			}
+		}
+	}
+
+	let keys = Object.keys(holder).sort();
+	keys.sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
+
+
+	let output = "";
+	output += `<select onchange="doSearch()"`;
+	output += ` data-field="${source}">\n`;
+	output += `<option class="first" value="">${source}</option>\n`;
+	for (let i=0; i<keys.length; i++) {
+		if (keys[i] === undefined) {
+			console.warn("KEY", i, "IS UNDEFINED");
+			continue;
+		}
+		output += `<option class="rest" value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+	}
+	output += "</select>\n";
+
+	return output;
+}
+
+
 //////////////////////////////
 //
 // buildSelectPerson -- Create select menu for persons.  These fields
@@ -253,9 +379,10 @@ function buildSelectPerson(data, source) {
 	}
 
 	let keys = Object.keys(holder).sort();
-	
+
 	let output = "";
-	output += `<select onchange="doSearch()" data-field="${source}">\n`;
+	output += `<select onchange="doSearch()"`;
+	output += ` data-field="${source}">\n`;
 	output += `<option class="first" value="">${source}</option>\n`;
 	for (let i=0; i<keys.length; i++) {
 		if (keys[i] === undefined) {
@@ -265,59 +392,6 @@ function buildSelectPerson(data, source) {
 		output += `<option class="rest" value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
 	}
 	output += "</select>\n";
-
-	return output;
-}
-
-
-
-
-//////////////////////////////
-//
-// buildSelect --
-//
-
-function buildSelect(data, source) {
-	VENOP.columns.push(source);
-	let output = "";
-	output += "<div style='display:inline-block; white-space: nowrap'>";
-	output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" type="checkbox" checked>`;
-
-	if (source == "Composer") {
-		output += buildSelectPerson(data, source);
-		output += "</div>";
-		return output;
-	}
-	if (source == "Librettist") {
-		output += buildSelectPerson(data, source);
-		output += "</div>";
-		return output;
-	}
-	if (source == "Dedicatee") {
-		output += buildSelectPerson(data, source);
-		output += "</div>";
-		return output;
-	}
-
-	let holder = {};
-	for (let i=0; i<data.length; i++) {
-		let value = data[i][source];
-		if (typeof holder[value] === "undefined") {
-			holder[value] = 1;
-		} else {
-			holder[value]++;
-		}
-	}
-
-	let keys = Object.keys(holder).sort();
-	
-	output += `<select onchange="doSearch()" data-field="${source}">\n`;
-	output += `<option value="">${source}</option>\n`;
-	for (let i=0; i<keys.length; i++) {
-		output+= `<option value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
-	}
-	output += "</select>\n";
-	output += "</div>";
 
 	return output;
 }
@@ -354,33 +428,35 @@ function displaySearchResults(results, target) {
 	output += "<table class='opera'>";
 
 	output += "<tr class='sticky'>";
-	output += `<th data-source="Key"                 onclick='sortBy("Key")'                 title="sort by Key"                 class="resizable key"                >Key                </th>`;
-	output += `<th data-source="Sorting date"        onclick="sortBy('Sorting date')'        title="sort by Sorting date"        class="resizable nobreak sorting-date"       >Sorting date       </th>`;
-	output += `<th data-source="Work title"          onclick="sortBy('Work title')"          title="sort by Work title"          class="resizable work"               >Work title         </th>`;
-	output += `<th data-source="Theater"             onclick="sortBy('Theater')"             title="sort by Theater"             class="resizable theater"            >Theater            </th>`;
-	output += `<th data-source="Composer"            onclick="sortBy('Composer')"            title="sort by Composer"            class="resizable composer"           >Composer           </th>`;
-	output += `<th data-source="Librettist"          onclick="sortBy('Librettist')"          title="sort by Librettist"          class="resizable librettist"         >Librettist         </th>`;
-	output += `<th data-source="Dedicatee"           onclick="sortBy('Dedicatee')"           title="sort by Dedicatee"           class="resizable dedicatee"          >Dedicatee          </th>`;
-	output += `<th data-source="Dedicatee residence" onclick="sortBy('Dedicatee residence')" title="sort by Dedicatee residence" class="resizable dedicatee-residence">Dedicatee residence</th>`;
-	// output += `<th data-source="Dedicatee map"       onclick="sortBy('Dedicatee map')"       title="sort by Dedicatee map"       class="resizable residence"          >Dedicatee map      </th>`;
-	output += `<th data-source="Score"               onclick="sortBy('Score')"               title="sort by Score"               class="resizable score"              >Score              </th>`;
-	output += `<th data-source="Misc. arias"         onclick="sortBy('Misc. arias')"         title="sort by Misc. arias"         class="resizable misc-arias"         >Misc. arias        </th>`;
-	output += `<th data-source="Balli"               onclick="sortBy('Balli')"               title="sort by Balli"               class="resizable balli"              >Balli              </th>`;
-	output += `<th data-source="Intermezzi (comic)"  onclick="sortBy('Intermezzi (comic)')"  title="sort by Intermezzi"          class="resizable intermezzi-comic"   >Intermezzi (comic) </th>`;
-	output += `<th data-source="Dramatic genre"      onclick="sortBy('Dramatic genre')"      title="sort by Dramatic genre"      class="resizable dramatic-genre"     >Dramatic genre     </th>`;
-	output += `<th data-source="Season"              onclick="sortBy('Season')"              title="sort by Season"              class="resizable season"             >Season             </th>`;
-	output += `<th data-source="Modern year"         onclick="sortBy('Modern year')"         title="sort by Modern year"         class="resizable modern-year"        >Modern year        </th>`;
+	// output += `<th data-source="Key"                    onclick='sortBy("Key")'                    title="sort by Key"                    class="resizable key"                   >Key                </th>`;
+	output += `<th data-source="Sorting date"           onclick="sortBy('Sorting date')'           title="sort by Sorting date"           class="resizable nobreak sorting-date"  >Sorting date       </th>`;
+	output += `<th data-source="Work title"             onclick="sortBy('Work title')"             title="sort by Work title"             class="resizable work"                  >Work title         </th>`;
+	output += `<th data-source="Theater"                onclick="sortBy('Theater')"                title="sort by Theater"                class="resizable theater"               >Theater            </th>`;
+	output += `<th data-source="Composer"               onclick="sortBy('Composer')"               title="sort by Composer"               class="resizable composer"              >Composer           </th>`;
+	output += `<th data-source="Librettist"             onclick="sortBy('Librettist')"             title="sort by Librettist"             class="resizable librettist"            >Librettist         </th>`;
+	output += `<th data-source="Dedicatee"              onclick="sortBy('Dedicatee')"              title="sort by Dedicatee"              class="resizable dedicatee"             >Dedicatee          </th>`;
+	output += `<th data-source="Dedicatee jurisdiction" onclick="sortBy('Dedicatee jurisdiction')" title="sort by Dedicatee jurisdiction" class="resizable dedicatee-jurisdiction">Dedicatee jurisdiction</th>`;
+	output += `<th data-source="Dedicatee residence"    onclick="sortBy('Dedicatee residence')"    title="sort by Dedicatee residence"    class="resizable dedicatee-residence"   >Dedicatee residence</th>`;
+	// output += `<th data-source="Dedicatee map"       onclick="sortBy('Dedicatee map')"          title="sort by Dedicatee map"          class="resizable residence"             >Dedicatee map      </th>`;
+	output += `<th data-source="Score"                  onclick="sortBy('Score')"                  title="sort by Score"                  class="resizable score"                 >Score              </th>`;
+	output += `<th data-source="Misc. arias"            onclick="sortBy('Misc. arias')"            title="sort by Misc. arias"            class="resizable misc-arias"            >Misc. arias        </th>`;
+	output += `<th data-source="Balli"                  onclick="sortBy('Balli')"                  title="sort by Balli"                  class="resizable balli"                 >Balli              </th>`;
+	output += `<th data-source="Intermezzi (comic)"     onclick="sortBy('Intermezzi (comic)')"     title="sort by Intermezzi"             class="resizable intermezzi-comic"      >Intermezzi (comic) </th>`;
+	output += `<th data-source="Dramatic genre"         onclick="sortBy('Dramatic genre')"         title="sort by Dramatic genre"         class="resizable dramatic-genre"        >Dramatic genre     </th>`;
+	output += `<th data-source="Season"                 onclick="sortBy('Season')"                 title="sort by Season"                 class="resizable season"                >Season             </th>`;
+	output += `<th data-source="Modern year"            onclick="sortBy('Modern year')"            title="sort by Modern year"            class="resizable modern-year"           >Modern year        </th>`;
 	output += "</tr>";
 
 	for (let i=0; i<results.length; i++) {
 		output += "<tr>";
-		output += `<td data-source="Key"                 class="key"                  >${results[i]["Key"]                    || ""}  </td>`;
+		// output += `<td data-source="Key"                 class="key"                  >${results[i]["Key"]                    || ""}  </td>`;
 		output += `<td data-source="Sorting date"        class="sorting-date"         >${results[i]["Sorting date"]           || ""}  </td>`;
 		output += `<td data-source="Work title"          class="work-title"           >${results[i]["Work title"]             || ""}  </td>`;
 		output += `<td data-source="Theater"             class="theater"              >${results[i]["Theater"]                || ""}  </td>`;
 		output += `<td data-source="Composer"            class="composer"             >${removeCurly(results[i]["Composer"]   || "")} </td>`;
 		output += `<td data-source="Librettist"          class="librettist"           >${removeCurly(results[i]["Librettist"] || "")} </td>`;
 		output += `<td data-source="Dedicatee"           class="dedicatee"            >${removeCurly(results[i]["Dedicatee"]  || "")} </td>`;
+		output += `<td data-source="Dedicatee jurisdiction" class="dedicatee-jurisdiction"  >${results[i]["Dedicatee jurisdiction"]    || ""}  </td>`;
 		output += `<td data-source="Dedicatee residence" class="dedicatee-residence"  >${results[i]["Dedicatee residence"]    || ""}  </td>`;
 		// output += `<td data-source="Dedicatee map"       class="dedicatee-map"        >${results[i]["Dedicatee map"]          || ""}  </td>`;
 		output += `<td data-source="Score"               class="score"                >${results[i]["Score"]                  || ""}  </td>`;
@@ -477,6 +553,13 @@ console.error("STARTING RESULTS", results);
 	for (let i=0; i<selects.length; i++) {
 		let field = selects[i].dataset.field;
 		let query = selects[i].value;
+		if ((field == "Min. year") || (field == "Max. year")) {
+			// min and max years handled separately below
+			continue;
+		}
+		if (field == "Score") {
+			continue;
+		}
 		results = filterResults(results, field, query);
 	}
 
@@ -491,9 +574,35 @@ console.error("STARTING RESULTS", results);
 	}
 
 	results = filterByYearRange(results);
+	results = filterByScore(results);
 
 	displaySearchResults(results, "#search-results");
 	VENOP.results = results;
+}
+
+
+
+//////////////////////////////
+//
+// filterByScore --
+//
+
+function filterByScore(results) {
+	let value = document.querySelector(`select[data-field="Score"]`).value;
+	let newResults = [];
+	for (let i=0; i<results.length; i++) {
+		let score = results[i]["Score"];
+		if (!score) {
+			continue;
+		}
+
+		let position = score.indexOf(value);
+		if (position >= 0) {
+			newResults.push(results[i]);
+		}
+	}
+	// console.log("NEW RESULTS", newResults);
+	return newResults;
 }
 
 
@@ -510,19 +619,29 @@ console.log("INPUT RESULTS", results);
 	if (minyearValue.match(/^\s*$/) && maxyearValue.match(/^\s*$/)) {
 		return results;
 	}
-	let minyear = 0;
-	let maxyear = 3000;
-	let matches = minyearValue.match(/(1\d{3})/);
-	if (matches) {
-		minyear = parseInt(matches[1]);
+	let minyear = minyearValue;
+	let maxyear = maxyearValue;
+	// let minyear = 0;
+	// let maxyear = 3000;
+	// let matches = minyearValue.match(/(1\d{3})/);
+	// if (matches) {
+	// 	minyear = parseInt(matches[1]);
+	// }
+	// matches = maxyearValue.match(/(1\d{3})/);
+	// if (matches) {
+	// 	maxyear = parseInt(matches[1]);
+	// }
+	// if ((minyear == 0) && (maxyear == 3000)) {
+	// 	return results;
+	// }
+
+	if (!minyear) {
+		minyear = 0;
 	}
-	matches = maxyearValue.match(/(1\d{3})/);
-	if (matches) {
-		maxyear = parseInt(matches[1]);
+	if (!maxyear) {
+		maxyear = 3000;
 	}
-	if ((minyear == 0) && (maxyear == 3000)) {
-		return results;
-	}
+
 	if (maxyear < minyear) {
 		let temp = maxyear;
 		maxyear = minyear;
@@ -549,7 +668,7 @@ console.warn("YEAR", year);
 	console.log("NEW RESULTS", newResults);
 	return newResults;
 }
-	
+
 
 
 //////////////////////////////
