@@ -405,7 +405,7 @@ function buildSelectPerson(data, source) {
 
 function buildTextSearch(source) {
 	VENOP.columns.push(source);
-	let output = `<input spellcheck="false" autocomplete="off" autocorrect="off" tyle="text" oninput="doSearch()" placeholder="${source}" data-field="${source}">`;
+	let output = `<input spellcheck="false" autocomplete="off" autocorrect="off" type="text" oninput="doSearch()" placeholder="${source}" data-field="${source}">`;
 	return output;
 }
 
