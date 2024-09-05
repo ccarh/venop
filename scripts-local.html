@@ -19,7 +19,8 @@ function storeDataSingleSheet(obj, sheet, json) {
 		// entry.Theater = "Sant'Angelo";
 		// entry.Theater = "Sant'Angelo";
 		if (entry.Score) {
-			entry.Score = entry.Score.replace(/scores?:?/gi, "");
+			// entry.Score = entry.Score.replace(/scores?:?/gi, "");
+			entry.Score = markupScore(entry.Score);
 		}
 		if (entry["Misc. arias"]) {
 			entry["Misc. arias"] = entry["Misc. arias"].replace(/arias?:?/gi, "");
@@ -38,6 +39,35 @@ function storeDataSingleSheet(obj, sheet, json) {
 	displaySearchFields(obj.results, "#search-fields");
 	displaySearchResults(obj.results, "#search-results");
 }
+
+
+function markupScore(text) {
+	let regex = /\b[A-ZÜ]+-[A-Za-züÜ]+\b/g;
+
+	let newtext = text.replace(regex, (match) => {
+		let output = "";
+		let entry = VENOP.rismBySigla[match];
+		if (entry) {
+			let title = entry.Name || "";
+			let url = entry["Number URL"] || "";
+			if (url) {
+				output = `<a target="_blank"`;
+				if (title) {
+					output += ` title="${title}"`;
+				}
+				output += ` href="${url}">${match}</a>`;
+			} else {
+				output = match;
+			}
+		} else {
+			output = match;
+		}
+  		return output;
+	});
+
+	return newtext;
+}
+
 
 
 function storeData(obj, sheet, json) {
@@ -294,23 +324,36 @@ function buildSelect(data, source) {
 //
 
 function buildSelectScore(data, source) {
-	let holder = {};
-	for (let i=0; i<data.length; i++) {
-		let d = data[i][source];
-		if (!d) {
-			continue;
-		}
-		let matches = d.match(/\b[A-Z]+-[A-ZÜÖÄ]+[a-züöä]*\b/g);
-		if (matches) {
-			for (let i=0; i<matches.length; i++) {
-				if (!holder[matches[i]]) {
-					holder[matches[i]] = 1;
-				} else {
-					holder[matches[i]]++;
-				}
-			}
-		}
-	}
+
+let holder = {};
+for (let i = 0; i < data.length; i++) {
+    let d = data[i][source];
+    if (!d) {
+        continue;
+    }
+
+    // Remove HTML tags
+    d = d.replace(/<.*?>/g, "");
+
+    // Find all matches based on the regex
+    let matches = d.match(/\b[A-ZÜÖÄ]+-[A-Za-zÜÖÄüöä]+\b/g);
+
+    if (matches) {
+        // Use a Set to store unique matches for this line
+        let uniqueMatches = new Set(matches);
+
+        // Iterate over the unique matches and update the holder
+        uniqueMatches.forEach(match => {
+            if (!holder[match]) {
+                holder[match] = 1;
+            } else {
+                holder[match]++;
+            }
+        });
+    }
+}
+
+console.log(holder);
 
 	let keys = Object.keys(holder).sort();
 	keys.sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
@@ -325,7 +368,24 @@ function buildSelectScore(data, source) {
 			console.warn("KEY", i, "IS UNDEFINED");
 			continue;
 		}
-		output += `<option class="rest" value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+		let name = "";
+		if (keys[i]) {
+			if (VENOP.rismBySigla[keys[i]]) {
+				name = VENOP.rismBySigla[keys[i]].Name;
+			} else {
+				console.warn("SIGLA", keys[i], "has no name");
+			}
+		} else {
+			console.warn("i", i, "keys[i]", keys[i]);
+		}
+		if (name) {
+			name = name.replace(/"/g, "\"");
+		}
+		output += `<option class="rest"`;
+		if (name) {
+			output += ` title="${name}"`;
+		}
+		output += ` value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
 	}
 	output += "</select>\n";
 
@@ -405,7 +465,7 @@ function buildSelectPerson(data, source) {
 
 function buildTextSearch(source) {
 	VENOP.columns.push(source);
-	let output = `<input spellcheck="false" autocomplete="off" autocorrect="off" type="text" oninput="doSearch()" placeholder="${source}" data-field="${source}">`;
+	let output = `<input id="title-search" spellcheck="false" autocomplete="off" autocorrect="off" type="text" oninput="doSearch()" placeholder="${source}" data-field="${source}">`;
 	return output;
 }
 

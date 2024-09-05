@@ -13,7 +13,8 @@ VENOP.columns = [];
 
 // Pruned sheet:
 // VENOP.macroid = "AKfycbyLVIgeHmOn5yYnSgBbR1OjBTVUONmQFtAyBbPw1mekN4_qYL58947E8cN48NJwV91g";
-VENOP.macroid = "AKfycbykHNG2jebPo5wa9RyLMlHDNR8YRYEbaIGZKRhte_mhvaVqXiwzRcz-PCq66I6QYJV4";
+// VENOP.macroid = "AKfycbykHNG2jebPo5wa9RyLMlHDNR8YRYEbaIGZKRhte_mhvaVqXiwzRcz-PCq66I6QYJV4";
+VENOP.macroid    = "AKfycbxggRPgnZPgAOwyz7R-5fEiQJA2HoLbWgPYPKw3NnYaH3GqROVfTvzGb0qF3aqo6vBf";
 
 // VENOP.sheet0Url = `https://script.google.com/macros/s/${VENOP.macroid}/exec?sheet=saint-angelo`;
 VENOP.sheet0Url = `https://script.google.com/macros/s/${VENOP.macroid}/exec?sheet=leftside`;
@@ -22,6 +23,9 @@ VENOP.sheet0Url = `https://script.google.com/macros/s/${VENOP.macroid}/exec?shee
 VENOP.sheet1Url = "https://script.google.com/macros/s/AKfycby-4fK6gfEhY3T6XxriSnB3s_FeP5CMLACDjmuSOHwurCxdTqKsrHPCjcpF0ZiXSAJV0A/exec";
 VENOP.sheet2Url = "https://script.google.com/macros/s/AKfycbxgsC3LXE6NAZYgM9kZRz-SKIxg-cBgtiHI5WTmpCdBcR6voyxIn8VK5ZmJ8Mo4-9W9VQ/exec";
 VENOP.sheet3Url = "https://script.google.com/macros/s/AKfycbz5CZq7icB6xQAoxX4x17CWUBW-ucx8zKViFdY6r3ny-lMP-mtCPq6UJKTfj5zP86-h/exec";
+
+
+VENOP.sheetRismSigla = `https://script.google.com/macros/s/${VENOP.macroid}/exec?sheet=888914412`;
 
 // Sheet 1: Basic parameters
 // Sheet 2: Dramatic genres, musical extras
@@ -45,10 +49,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Single sheet version:
 document.addEventListener("DOMContentLoaded", function () {
+	fetch(VENOP.sheetRismSigla)
+		.then (response => response.json())
+		.then ( data => processSiglaData(data));
+});
+
+
+function processSiglaData(data) {
+	VENOP.rismSiglaList = data;
+
+	// Create an index by sigla:
+	VENOP.rismBySigla = {};
+	for (let i=0; i<data.length; i++) {
+		let index = data[i]["RISM siglum"];
+		if (data[i].Corrections) {
+			index = data[i].Corrections;
+		}
+		VENOP.rismBySigla[index] = data[i];
+	}
+
 	fetch(VENOP.sheet0Url)
 		.then(response => response.json())
 		.then(data => storeDataSingleSheet(VENOP, "sheet0", data));
-});
+}
 
 
 function processColumn(event) {
