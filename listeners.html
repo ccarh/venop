@@ -47,15 +47,25 @@ document.addEventListener("DOMContentLoaded", function () {
 */
 
 
+// Preload data, download updated data later
+let sigladata = {% include data/sigla.json %};
+processSiglaData(sigladata, false);
+let maindata = {% include data/main.json %};
+storeDataSingleSheet(VENOP, "sheet0", maindata);
+
+
+
 // Single sheet version:
 document.addEventListener("DOMContentLoaded", function () {
+	console.log("DOWNLOADING SIGLA INDEX FROM", VENOP.sheetRismSigla);
 	fetch(VENOP.sheetRismSigla)
 		.then (response => response.json())
-		.then ( data => processSiglaData(data));
+		.then ( data => processSiglaData(data, true));
 });
 
 
-function processSiglaData(data) {
+
+function processSiglaData(data, secondary) {
 	VENOP.rismSiglaList = data;
 
 	// Create an index by sigla:
@@ -68,9 +78,12 @@ function processSiglaData(data) {
 		VENOP.rismBySigla[index] = data[i];
 	}
 
-	fetch(VENOP.sheet0Url)
-		.then(response => response.json())
-		.then(data => storeDataSingleSheet(VENOP, "sheet0", data));
+	if (secondary) {
+		console.log("DOWNLOADING MAIN INDEX FROM", VENOP.sheet0Url);
+		fetch(VENOP.sheet0Url)
+			.then(response => response.json())
+			.then(data => storeDataSingleSheet(VENOP, "sheet0", data));
+	}
 }
 
 

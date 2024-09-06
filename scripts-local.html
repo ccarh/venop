@@ -132,8 +132,10 @@ function mergeContents(obj, target, sheets) {
 //
 
 function displaySearchFields(data, target) {
+
+	console.log("TARGET", target);
 	let element = document.querySelector(target);
-	if (!target) {
+	if (!element) {
 		console.log("CANNOT FIND TARGET", target, "FOR DISPLAYING SEARCH FIELDS");
 		return;
 	}
