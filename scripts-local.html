@@ -155,7 +155,7 @@ function displaySearchFields(data, target) {
 	output += buildSelect(data, "Balli");
 	output += buildSelect(data, "Intermezzi (comic)");
 	output += buildSelect(data, "Dramatic genre");
-	output += buildSelect(data, "Season");
+	output += buildSelect(data, "Theatrical season");
 	output += buildSelect(data, "Modern year");
 	output += buildSelect(data, "Min. year");
 	output += buildSelect(data, "Max. year");
@@ -503,7 +503,7 @@ function displaySearchResults(results, target) {
 	output += `<th data-source="Balli"                  onclick="sortBy('Balli')"                  title="sort by Balli"                  class="resizable balli"                 >Balli              </th>`;
 	output += `<th data-source="Intermezzi (comic)"     onclick="sortBy('Intermezzi (comic)')"     title="sort by Intermezzi"             class="resizable intermezzi-comic"      >Intermezzi (comic) </th>`;
 	output += `<th data-source="Dramatic genre"         onclick="sortBy('Dramatic genre')"         title="sort by Dramatic genre"         class="resizable dramatic-genre"        >Dramatic genre     </th>`;
-	output += `<th data-source="Season"                 onclick="sortBy('Season')"                 title="sort by Season"                 class="resizable season"                >Season             </th>`;
+	output += `<th data-source="Theatrical season"      onclick="sortBy('Theatrical season')"                 title="sort by Theatrical season"                 class="resizable season"                >Theatrical season             </th>`;
 	output += `<th data-source="Modern year"            onclick="sortBy('Modern year')"            title="sort by Modern year"            class="resizable modern-year"           >Modern year        </th>`;
 	output += "</tr>";
 
@@ -524,7 +524,7 @@ function displaySearchResults(results, target) {
 		output += `<td data-source="Balli"               class="balli"                >${results[i]["Balli"]                  || ""}  </td>`;
 		output += `<td data-source="Intermezzi (comic)"  class="intermezzi-comic"     >${results[i]["Intermezzi (comic)"]     || ""}  </td>`;
 		output += `<td data-source="Dramatic genre"      class="dramatic-genre"       >${results[i]["Dramatic genre"]         || ""}  </td>`;
-		output += `<td data-source="Season"              class="season"               >${results[i]["Season"]                 || ""}  </td>`;
+		output += `<td data-source="Theatrical season"              class="season"               >${results[i]["Theatrical season"]                 || ""}  </td>`;
 		output += `<td data-source="Modern year"         class="modern-year"          >${results[i]["Modern year"]            || ""}  </td>`;
 		output += "</tr>";
 	}
@@ -608,8 +608,6 @@ function doSearch() {
 	let inputs = document.querySelectorAll('#search-fields input:not([type="checkbox"])');
 	let results = VENOP.dataArray;
 
-console.error("STARTING RESULTS", results);
-
 	for (let i=0; i<selects.length; i++) {
 		let field = selects[i].dataset.field;
 		let query = selects[i].value;
@@ -649,6 +647,9 @@ console.error("STARTING RESULTS", results);
 
 function filterByScore(results) {
 	let value = document.querySelector(`select[data-field="Score"]`).value;
+	if (!value) {
+		return results;
+	}
 	let newResults = [];
 	for (let i=0; i<results.length; i++) {
 		let score = results[i]["Score"];
@@ -673,7 +674,6 @@ function filterByScore(results) {
 //
 
 function filterByYearRange(results) {
-console.log("INPUT RESULTS", results);
 	let minyearValue = document.querySelector("#yearmin").value;
 	let maxyearValue = document.querySelector("#yearmax").value;
 	if (minyearValue.match(/^\s*$/) && maxyearValue.match(/^\s*$/)) {
