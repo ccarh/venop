@@ -163,8 +163,10 @@ function displaySearchFields(data, target) {
 	output += buildSelect(data, "Max. year");
 	// output += buildYearRange();
 	output += createClearButton();
+	output += `<div id="search-count"></div>`;
 
 	element.innerHTML = output;
+	element.classList.remove("hidden");
 }
 
 
@@ -190,7 +192,7 @@ function buildYearRange() {
 
 function createClearButton() {
 	let output = "";
-	output += '<span class="button" onclick="resetSearchFields()">Clear</span>';
+	output += '<span id="clear-button" onclick="resetSearchFields()">Reset</span>';
 	return output;
 }
 
@@ -261,7 +263,23 @@ function buildSelect(data, source) {
 	let output = "";
 	output += "<div style='display:inline-block; white-space: nowrap'>";
 	if (!((source == "Min. year") || (source == "Max. year"))) {
-		output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" type="checkbox" checked>`;
+		if  (source === "Sorting date") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Dedicatee") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Dedicatee juristiction") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Dedicatee residence") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Misc. arias") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Balli") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Intermezzi (comic)") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" checked>`;
+		}
 	}
 
 	if (source == "Composer") {

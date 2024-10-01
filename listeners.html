@@ -91,6 +91,29 @@ function processColumn(event) {
 	adjustColumnVisibility();
 }
 
+
+
+
+    const tableContainer = document.querySelector('.table-container');
+    const scrollbar = document.querySelector('.scrollbar');
+    const fakeScroll = document.querySelector('.fake-scroll');
+
+    // Set the fake scroll width to match the table's width
+    fakeScroll.style.width = tableContainer.scrollWidth + 'px';
+
+    // Sync the scrollbar with the table
+    scrollbar.addEventListener('scroll', () => {
+        tableContainer.scrollLeft = scrollbar.scrollLeft;
+    });
+
+    tableContainer.addEventListener('scroll', () => {
+        scrollbar.scrollLeft = tableContainer.scrollLeft;
+    });
+
+
+
+
+
 </script>
 
 

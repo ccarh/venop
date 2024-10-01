@@ -2,25 +2,78 @@
 <style>
 
 
-#search-fields {
-	min-height: 118.5px;
+html, body {
+	/* background-color: beige; */
+	background-color: #351a0a;
+}
+
+body { 
+	margin: 0;
+	padding: 0;
+	background-image: url('img/berenice-messenger.jpg');
+	background-color: #351a0a;
+	background-size: cover;
+	background-attachment: fixed;
+	overflow-x: hidden;
 }
 
 
+h1.title {
+	font-family: Palatino, serif;
+	font-size:   4.75rem;
+	margin: auto;
+	color: antiquewhite;
+	text-shadow: 0px 0px 10px black;
+
+}
+
+input[type="checkbox"] {
+	/* accent-color: #351a0a; */
+	accent-color: rgba(245, 245, 220, 1); /* beige */
+	transform: scale(1.5);
+}
+
+
+#search-results {
+	width: calc(100% - 20px); /* Full width minus padding */
+	margin: 0 auto;           /* Center container */
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	box-sizing: border-box;
+	margin-top: 50px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	position: sticky;
+	bottom: 0;
+}
+
+.table-container {
+    position: relative;
+    height: 100vh; /* Adjust height as needed */
+}
+
 table.opera {
+    	width: 100%;
+	max-width: none;
 	margin-top: 50px;
 	border-collapse: collapse;
 	font-family: Tahoma;
+	table-layout: auto;
 }
 
 
 table.opera th {
 	text-align: left;
-	background: lightblue;
 	position: sticky;
 	padding-left: 3px;
 	padding-right: 3px;
 	top: 0;
+	z-index:10;
+	color: antiquewhite;
+	/* background: #351a0a; */
+	background: black;
+	opacity: 0.7;
 	cursor: pointer;
 }
 
@@ -28,8 +81,10 @@ table.opera th {
 table.opera td {
 	padding-right: 3px;
 	padding-left: 3px;
-	border: 1px solid #eee;
+	border: 1px solid #aaa;
 	vertical-align: baseline;
+	background: beige;
+	opacity: 0.9;
 }
 
 
@@ -39,8 +94,10 @@ table.opera td.nobreak {
 }
 
 
-table.opera tr:hover {
-	background: #ff000011;
+table.opera tr:hover:not(:has(th)) {
+	/* background: #ff000011; */
+	background: #880000;
+	opacity: 0.9;
 }
 
 
@@ -60,39 +117,15 @@ table.opera th.dedicatee, table.opera td.dedicatee {
 
 
 input, select {
-	border: 1px solid #ddd;
+	border: 1px solid antiquewhite;
 	max-width: 350px;
-	font-size: 1.10rem;
+	font-size: 1.75rem;
 	margin: 3px;
 	padding: 5px;
-	background: lightblue;
-}
-
-.nobreak {
-	white-space: nowrap;
-}
-
-select.active {
-	color: white;
-	background: navy;
-}
-
-
-input::placeholder {
-	font-style: italic;
-	color: white;
-}
-
-
-option.rest {
-	background: navy;
-	color: white;
-}
-
-
-option.first {
-	background: lightblue;
-	color: black;
+	color: antiquewhite;
+	/* background: rgba(53, 26, 10, 1.0); #351a0a with opacity */
+	background: black;
+	opacity: 0.95;
 }
 
 
@@ -104,32 +137,92 @@ button:focus {
 }
 
 
+.nobreak {
+	white-space: nowrap;
+}
+
+
+select.active {
+	color: antiquewhite;
+	/* background: navy; */
+	background: #880000;
+	opacity: 1.0;
+}
+
+
+input::placeholder {
+	font-style: italic;
+	color: white;
+}
+
+
+option.rest {
+	/* background: navy; */
+	opacity: 1.0;
+	color: antiquewhite;
+}
+
+
+option.first {
+	background: #351a0a;
+	color: black;
+}
+
+
 #search-fields {
-	margin: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: l00px !important;
+	margin-right: 100px !important;
+	width: 100%;
 	padding: 10px;
-	border: 3px solid #999;
+	/* border: 1px solid black; */
+	/* background-color: rgba(245, 245, 220, 1); beige */
+	/* color: rgba(53, 26, 10, 0.8); #351a0a with opacity */ 
+	opacity: 0.7;
+	min-height: 118.5px;
+}
+
+
+.hidden {
+	visibility: hidden;
 }
 
 
 #search-count {
-	font-size: 1.5rem;
+	position: relative;
+	top: 2px;
+	margin-left: 20px;
+	font-size: 2.0rem;
+	font-family: Tahoma;
+	font-weight: bold;
+	color: antiquewhite;
+	text-shadow: 0px 0px 5px black;
+	display: inline-block;
 }
 
 
-.button {
+#clear-button {
+	position: relative;
+	left: 5px;
+	top: 1px;
 	font-family: Tahoma;
-	font-size: 1rem;
+	font-size: 1.75rem;
 	display: inline-block;
 	background: darkred;
-	color: white;
+	color: antiquewhite;
 	border-radius: 7px;
-	padding: 7px;
+	padding-top: 3px;
+	padding-bottom: 5px;
+	padding-left: 7px;
+	padding-right: 7px;
+	border: 1px solid #550000;
 }
 
 
-.button:hover {
-	background: red;
-	color: black;
+#clear-button:hover {
+	background: brown;
+	color: white;
 	cursor: pointer;
 }
 
@@ -140,7 +233,8 @@ button:focus {
 }
 
 
-a {
+a, a:visited, a:hover, a:active, a:focus {
+	color: #880000;
 	text-decoration: none;
 }
 
@@ -154,14 +248,112 @@ a {
 }
 
 #title-search::placeholder {
-	color: black;
-	opacity: 0.75;
+	color: antiquewhite;
+	opacity: 0.9;
 }
 
 #title-search:not(:placeholder-shown) {
-	background: navy;
-	color: white;
+	/* background: navy; */
+	background: #880000;
+	opacity: 1.0;
+	color: antiquewhite;
 }
+
+.waiting {
+	cursor: waiting;
+}
+
+#help-button {
+	position: absolute;
+	font-family: Tahoma, sans-serif;
+	font-size: 2.25rem;
+	font-weight: bold;
+	top: 20px;
+	left: 35px;
+	width: 40px;
+	height: 40px;
+	color: rgba(53, 26, 10, 0.5); /* #351a0a with opacity */
+	background-color: antiquewhite;
+	box-shadow: 0px 0px 5px black;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	border: none;
+	cursor: pointer;
+}
+
+#help-button:hover {
+	opacity: 1; /* Remove opacity on hover for a stronger effect */
+}
+
+
+/* Style for the scrollbar track */
+::-webkit-scrollbar {
+    width: 16px; /* Adjust the width as needed */
+}
+
+/* Style for the scrollbar background (track) */
+::-webkit-scrollbar-track {
+    background-color: #351a0a; /* Dark background for the scrollbar track */
+}
+
+/* Style for the scrollbar handle (thumb) */
+::-webkit-scrollbar-thumb {
+    background-color: antiquewhite; /* Light color for the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+    border: 3px solid #351a0a; /* Optional border for better visibility */
+}
+
+/* Style for the scrollbar when hovered */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #c5b7a5; /* Slightly darker color on hover for the thumb */
+}
+
+/* Style for the scrollbar in Firefox */
+html {
+    scrollbar-color: antiquewhite #351a0a; /* thumb color first, track color second */
+    scrollbar-width: thin; /* You can set 'auto', 'thin', or 'none' */
+}
+
+/* *************************************************** */
+
+/* Scrollbar styling for WebKit browsers */
+.table-container::-webkit-scrollbar {
+    width: 16px; /* Width of the scrollbar */
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #008800; /* Background of the scrollbar track */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background-color: #008800; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+    border: 2px solid #008800; /* Optional: Border to enhance thumb visibility */
+}
+
+/* Scrollbar styling for Firefox */
+.table-container {
+    scrollbar-color: #008800 #008800; /* Thumb color first, track color second */
+    scrollbar-width: thin; /* Width of the scrollbar */
+}
+
+
+/* Fake scroll above the table */
+.scrollbar {
+    overflow-x: auto; /* Only enable horizontal scrolling */
+    overflow-y: hidden;
+}
+
+/* Fake scroll element (same width as the table) */
+.fake-scroll {
+    height: 1px; /* Small height to simulate the scrollbar */
+    background: transparent; /* Make it invisible */
+}
+
+
 
 </style>
 

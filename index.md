@@ -9,13 +9,21 @@ layout: home
 {% include_relative styles-local.html %}
 {% include_relative listeners.html %}
 
-<h1> Venetian Opera </h1>
+<a href="https://wiki.ccarh.org/wiki/Venetian_Opera_Documentation"
+    id="help-button" target="_blank">?</a>
 
-<div id="documentation"><a target="_blank" href="https://wiki.ccarh.org/wiki/Venetian_Opera_Documentation">Documentation</a></div>
+<center>
+    <h1 class="title"> Venetian Opera 1660–1761</h1>
+</center>
 
-<div id="search-fields"></div>
+<div id="search-fields" class="hidden"></div>
 
-<div id="search-count"></div>
-
-<div id="search-results"></div>
+<div class="scroll-container">
+    <div class="scrollbar">
+        <div class="fake-scroll"></div>
+    </div>
+    <div class="table-container">
+        <div id="search-results"></div>
+    </div>
+</div>
 
