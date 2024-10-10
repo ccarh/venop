@@ -1,117 +1,83 @@
 
 
+
 <script>
 // vim: ts=3
-
 
 var VENOP = {};
 
 VENOP.columns = [];
 
-// San'Angelo sheet only:
-// VENOP.macroid = "AKfycbzhIFJ0hUelyPzsZ7auUHcP6GXNIO4CB__7aW9W2hMggZYShY1EWmVrplvyrj-kFCnr";
+VENOP.macroid = "AKfycbzJr35O5Qk4nGoJvOiJiWSTFthl_prMukYMADzLgMfQKEGv3ULLDVi4sK9XeRsiviYt";
+VENOP.metadataUrl = `https://script.google.com/macros/s/${VENOP.macroid}/exec?gid=1417146289`;
+VENOP.siglaUrl = `https://script.google.com/macros/s/${VENOP.macroid}/exec?gid=888914412`;
 
-// Pruned sheet:
-// VENOP.macroid = "AKfycbyLVIgeHmOn5yYnSgBbR1OjBTVUONmQFtAyBbPw1mekN4_qYL58947E8cN48NJwV91g";
-// VENOP.macroid = "AKfycbykHNG2jebPo5wa9RyLMlHDNR8YRYEbaIGZKRhte_mhvaVqXiwzRcz-PCq66I6QYJV4";
-VENOP.macroid    = "AKfycbxggRPgnZPgAOwyz7R-5fEiQJA2HoLbWgPYPKw3NnYaH3GqROVfTvzGb0qF3aqo6vBf";
+// Preload sigla data, download updated data later:
+let SIGLADATA = {% include data/sigla.json %};
+console.log("sigladata", SIGLADATA);
+storeSiglaData(SIGLADATA);
 
-// VENOP.sheet0Url = `https://script.google.com/macros/s/${VENOP.macroid}/exec?sheet=saint-angelo`;
-VENOP.sheet0Url = `https://script.google.com/macros/s/${VENOP.macroid}/exec?sheet=leftside`;
-//VENOP.sheet0Url = `https://script.google.com/macros/s/${VENOP.macroid}/exec?sheet=pruned`;
+// Preload main metadata, download updated metadata later:
+let METADATA = {% include data/main.json %};
+storeMetadata(METADATA);
 
-VENOP.sheet1Url = "https://script.google.com/macros/s/AKfycby-4fK6gfEhY3T6XxriSnB3s_FeP5CMLACDjmuSOHwurCxdTqKsrHPCjcpF0ZiXSAJV0A/exec";
-VENOP.sheet2Url = "https://script.google.com/macros/s/AKfycbxgsC3LXE6NAZYgM9kZRz-SKIxg-cBgtiHI5WTmpCdBcR6voyxIn8VK5ZmJ8Mo4-9W9VQ/exec";
-VENOP.sheet3Url = "https://script.google.com/macros/s/AKfycbz5CZq7icB6xQAoxX4x17CWUBW-ucx8zKViFdY6r3ny-lMP-mtCPq6UJKTfj5zP86-h/exec";
+console.log("VENOP", VENOP);
 
-
-VENOP.sheetRismSigla = `https://script.google.com/macros/s/${VENOP.macroid}/exec?sheet=888914412`;
-
-// Sheet 1: Basic parameters
-// Sheet 2: Dramatic genres, musical extras
-// Sheet 3: Libretto catalogs
-
-/*
 document.addEventListener("DOMContentLoaded", function () {
-	VENOP.loadTime1 = performance.now();
-	fetch(VENOP.sheet1Url)
-		.then(response => response.json())
-		.then(data => storeData(VENOP, "sheet1", data));
-	fetch(VENOP.sheet2Url)
-		.then(response => response.json())
-		.then(data => storeData(VENOP, "sheet2", data));
-	fetch(VENOP.sheet3Url)
-		.then(response => response.json())
-		.then(data => storeData(VENOP, "sheet3", data));
-});
-*/
+	initializeWebpage();
 
-
-// Preload data, download updated data later
-let sigladata = {% include data/sigla.json %};
-processSiglaData(sigladata, false);
-let maindata = {% include data/main.json %};
-storeDataSingleSheet(VENOP, "sheet0", maindata);
-
-
-
-// Single sheet version:
-document.addEventListener("DOMContentLoaded", function () {
-	console.log("DOWNLOADING SIGLA INDEX FROM", VENOP.sheetRismSigla);
-	fetch(VENOP.sheetRismSigla)
-		.then (response => response.json())
-		.then ( data => processSiglaData(data, true));
-});
-
-
-
-function processSiglaData(data, secondary) {
-	VENOP.rismSiglaList = data;
-
-	// Create an index by sigla:
-	VENOP.rismBySigla = {};
-	for (let i=0; i<data.length; i++) {
-		let index = data[i]["RISM siglum"];
-		if (data[i].Corrections) {
-			index = data[i].Corrections;
+	fetch(VENOP.siglaUrl)
+	.then(responseSigla => {
+		if (!responseSigla.ok) {
+			throw new Error(`Failed to fetch from ${VENOP.siglaUrl}: ${responseSigla.statusText}`);
 		}
-		VENOP.rismBySigla[index] = data[i];
-	}
-
-	if (secondary) {
-		console.log("DOWNLOADING MAIN INDEX FROM", VENOP.sheet0Url);
-		fetch(VENOP.sheet0Url)
-			.then(response => response.json())
-			.then(data => storeDataSingleSheet(VENOP, "sheet0", data));
-	}
-}
-
-
-function processColumn(event) {
-	adjustColumnVisibility();
-}
-
-
-
-
-    const tableContainer = document.querySelector('.table-container');
-    const scrollbar = document.querySelector('.scrollbar');
-    const fakeScroll = document.querySelector('.fake-scroll');
-
-    // Set the fake scroll width to match the table's width
-    fakeScroll.style.width = tableContainer.scrollWidth + 'px';
-
-    // Sync the scrollbar with the table
-    scrollbar.addEventListener('scroll', () => {
-        tableContainer.scrollLeft = scrollbar.scrollLeft;
+		return responseSigla.json();
+	})
+	.then(dataSigla => {
+		storeSiglaData(dataSigla);
+      return fetch(VENOP.metadataUrl);
+	})
+	.then(responseMetadata => {
+		if (!responseMetadata.ok) {
+			throw new Error(`Failed to fetch from ${VENOP.metadataUrl}: ${responseMetadata.statusText}`);
+		}
+		return responseMetadata.json();
+	})
+	.then(dataMetadata => {
+		storeMetadata(dataMetadata);
+		console.warn("LOADED DATA FROM SPREADSHEET");
+		// Initialize a second time with the most recent data:
+      initializeWebpage();
+    })
+    .catch(error => {
+      console.error('Error fetching JSON data:', error);
     });
-
-    tableContainer.addEventListener('scroll', () => {
-        scrollbar.scrollLeft = tableContainer.scrollLeft;
-    });
+});
 
 
 
+//////////////////////////////
+//
+// DOMContentLoaded event listener -- Table slider setup.
+//
+
+document.addEventListener("DOMContentLoaded", function () {
+	const tableContainer = document.querySelector('.table-container');
+	const scrollbar = document.querySelector('.scrollbar');
+	const fakeScroll = document.querySelector('.fake-scroll');
+
+	// Set the fake scroll width to match the table's width
+	fakeScroll.style.width = tableContainer.scrollWidth + 'px';
+
+	// Sync the scrollbar with the table
+		scrollbar.addEventListener('scroll', () => {
+		tableContainer.scrollLeft = scrollbar.scrollLeft;
+	});
+
+	tableContainer.addEventListener('scroll', () => {
+		scrollbar.scrollLeft = tableContainer.scrollLeft;
+	});
+});
 
 
 </script>

@@ -3,24 +3,54 @@
 // vim: ts=3:nowrap:ft=javascript
 
 
+//////////////////////////////
+//
+// initializeWebpage --
+//
+
+function initializeWebpage() {
+	displaySearchFields(VENOP.results, "#search-fields");
+	displaySearchResults(VENOP.results, "#search-results");
+	doSearch();
+}
+
+
 
 //////////////////////////////
 //
-// storeData --
+// storeSiglaData --
 //
 
-function storeDataSingleSheet(obj, sheet, json) {
-	obj.dataArray = json;
-	obj.data = {};
-	for (let i=0; i<obj.dataArray.length; i++) {
-		let entry = obj.dataArray[i];
+function storeSiglaData(data) {
+	VENOP.rismSiglaList = data;
+	// Create a lookup table by sigla:
+	VENOP.rismBySigla = {};
+	for (let i=0; i<data.length; i++) {
+		let index = data[i]["RISM siglum"];
+		if (data[i].Corrections) {
+			index = data[i].Corrections;
+		}
+		VENOP.rismBySigla[index] = data[i];
+	}
+}
+
+
+
+//////////////////////////////
+//
+// storeMetadata --
+//
+
+function storeMetadata(metadata) {
+	VENOP.dataArray = metadata;
+	VENOP.data = {};
+	for (let i=0; i<VENOP.dataArray.length; i++) {
+		let entry = VENOP.dataArray[i];
 		// entry.Key = entry["Ordinal No."];
 		entry.Key = entry["Sorting date"];
-		// entry.Theater = "Sant'Angelo";
-		// entry.Theater = "Sant'Angelo";
 		if (entry.Score) {
 			// entry.Score = entry.Score.replace(/scores?:?/gi, "");
-			entry.Score = markupScore(entry.Score);
+			entry.Score = markupScoreField(entry.Score);
 		}
 		if (entry["Misc. arias"]) {
 			entry["Misc. arias"] = entry["Misc. arias"].replace(/arias?:?/gi, "");
@@ -32,16 +62,19 @@ function storeDataSingleSheet(obj, sheet, json) {
 				entry["Max. year"] = matches[1];
 			}
 		}
-		obj.data[entry.Key] = entry;
-		// console.warn("ENTRY", entry);
+		VENOP.data[entry.Key] = entry;
 	}
-	obj.results = obj.dataArray;
-	displaySearchFields(obj.results, "#search-fields");
-	displaySearchResults(obj.results, "#search-results");
+	VENOP.results = VENOP.dataArray;
 }
 
 
-function markupScore(text) {
+
+//////////////////////////////
+//
+// markupScoreField --
+//
+
+function markupScoreField(text) {
 	let regex = /\b[A-ZÜ]+-[A-Za-züÜ]+\b/g;
 
 	let newtext = text.replace(regex, (match) => {
@@ -70,62 +103,6 @@ function markupScore(text) {
 
 
 
-function storeData(obj, sheet, json) {
-	obj[sheet] = json;
-	if ((typeof obj.sheet1 !== "undefined") &&
-	    (typeof obj.sheet2 !== "undefined") &&
-	    (typeof obj.sheet3 !== "undefined")) {
-		obj.loadTime2 = performance.now();
-		obj.loadDuration = obj.loadTime2 - obj.loadTime1;
-		console.log("VENOP", obj);
-		mergeContents(obj, "data", ["sheet1", "sheet2", "sheet3"]);
-		obj.dataArray = [];
-		for (const property in obj.data) {
-			let element = obj.data[property];
-			obj.dataArray.push(element);
-		}
-		obj.results = obj.dataArray;
-		displaySearchFields(obj.results, "#search-fields");
-		displaySearchResults(obj.results, "#search-results");
-	}
-}
-
-
-
-//////////////////////////////
-//
-// mergeContents -- Merge contents of separate spreadsheets into a single
-//   database indexed by the "Key" field common to all worksheets.
-//
-
-function mergeContents(obj, target, sheets) {
-	obj[target] = {};
-	for (let i=0; i<sheets.length; i++) {
-		let source = sheets[i];
-		for (let j=0; j<obj[source].length; j++) {
-			let key = obj[source][j].Key;
-			if (typeof key === "undefined") {
-				console.error("Cannot find Key parameter in", obj[source][j]);
-				continue;
-			}
-			if (typeof obj[target][key] === "undefined") {
-				obj[target][key] = {};
-			}
-			for (const property in obj[source][j]) {
-				value = obj[source][j].property;
-				if (typeof obj[target][key][property] !== "undefined") {
-					if (value !== obj[target][key][property]) {
-						// console.warn(`FOR KEY >>${key}<< CONTENT DIFFERS FOR PROPERTY >>${source}<<, " WHICH IS NOW >>${value}<< BUT WAS >>${obj[target][key][property]}<<`);
-					}
-				}
-				obj[target][key][property] = obj[source][j][property];
-			}
-		}
-	}
-}
-
-
-
 //////////////////////////////
 //
 // displaySearchFields -- Show search fields for browse page.
@@ -143,7 +120,9 @@ function displaySearchFields(data, target) {
 	VENOP.columns = [];
 
 	let output = "";
-	output += buildTextSearch("Work title");
+	output += `<div id="search-count"></div>`;
+	output += `&nbsp;`;
+	output += buildTextSearch("Opera title");
 	output += buildSelect(data, "Sorting date");
 	output += buildSelect(data, "Theater");
 	output += buildSelect(data, "Composer");
@@ -163,7 +142,6 @@ function displaySearchFields(data, target) {
 	output += buildSelect(data, "Max. year");
 	// output += buildYearRange();
 	output += createClearButton();
-	output += `<div id="search-count"></div>`;
 
 	element.innerHTML = output;
 	element.classList.remove("hidden");
@@ -267,7 +245,7 @@ function buildSelect(data, source) {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else if  (source === "Dedicatee") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
-		} else if  (source === "Dedicatee juristiction") {
+		} else if  (source === "Dedicatee jurisdiction") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else if  (source === "Dedicatee residence") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
@@ -344,40 +322,36 @@ function buildSelect(data, source) {
 //
 
 function buildSelectScore(data, source) {
+	let holder = {};
+	for (let i=0; i<data.length; i++) {
+		let d = data[i][source];
+		if (!d) {
+			continue;
+		}
 
-let holder = {};
-for (let i = 0; i < data.length; i++) {
-    let d = data[i][source];
-    if (!d) {
-        continue;
-    }
+		// Remove HTML tags
+		d = d.replace(/<.*?>/g, "");
 
-    // Remove HTML tags
-    d = d.replace(/<.*?>/g, "");
+		// Find all matches based on the regex
+		let matches = d.match(/\b[A-ZÜÖÄ]+-[A-Za-zÜÖÄüöä]+\b/g);
 
-    // Find all matches based on the regex
-    let matches = d.match(/\b[A-ZÜÖÄ]+-[A-Za-zÜÖÄüöä]+\b/g);
+		if (matches) {
+			// Use a Set to store unique matches for this line
+			let uniqueMatches = new Set(matches);
 
-    if (matches) {
-        // Use a Set to store unique matches for this line
-        let uniqueMatches = new Set(matches);
-
-        // Iterate over the unique matches and update the holder
-        uniqueMatches.forEach(match => {
-            if (!holder[match]) {
-                holder[match] = 1;
-            } else {
-                holder[match]++;
-            }
-        });
-    }
-}
-
-console.log(holder);
+			// Iterate over the unique matches and update the holder
+			uniqueMatches.forEach(match => {
+				if (!holder[match]) {
+					holder[match] = 1;
+				} else {
+					holder[match]++;
+				}
+			});
+		}
+	}
 
 	let keys = Object.keys(holder).sort();
 	keys.sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
-
 
 	let output = "";
 	output += `<select onchange="doSearch()"`;
@@ -411,6 +385,7 @@ console.log(holder);
 
 	return output;
 }
+
 
 
 //////////////////////////////
@@ -493,7 +468,7 @@ function buildTextSearch(source) {
 
 //////////////////////////////
 //
-// displaySearchResults -- 
+// displaySearchResults --
 //
 
 function displaySearchResults(results, target) {
@@ -510,7 +485,7 @@ function displaySearchResults(results, target) {
 	output += "<tr class='sticky'>";
 	// output += `<th data-source="Key"                    onclick='sortBy("Key")'                    title="sort by Key"                    class="resizable key"                   >Key                </th>`;
 	output += `<th data-source="Sorting date"           onclick="sortBy('Sorting date')'           title="sort by Sorting date"           class="resizable nobreak sorting-date"  >Sorting date       </th>`;
-	output += `<th data-source="Work title"             onclick="sortBy('Work title')"             title="sort by Work title"             class="resizable work"                  >Work title         </th>`;
+	output += `<th data-source="Opera title"            onclick="sortBy('Opera title')"            title="sort by Opera title"            class="resizable work"                  >Opera title        </th>`;
 	output += `<th data-source="Theater"                onclick="sortBy('Theater')"                title="sort by Theater"                class="resizable theater"               >Theater            </th>`;
 	output += `<th data-source="Composer"               onclick="sortBy('Composer')"               title="sort by Composer"               class="resizable composer"              >Composer           </th>`;
 	output += `<th data-source="Librettist"             onclick="sortBy('Librettist')"             title="sort by Librettist"             class="resizable librettist"            >Librettist         </th>`;
@@ -531,7 +506,7 @@ function displaySearchResults(results, target) {
 		output += "<tr>";
 		// output += `<td data-source="Key"                 class="key"                  >${results[i]["Key"]                    || ""}  </td>`;
 		output += `<td data-source="Sorting date"        class="sorting-date"         >${results[i]["Sorting date"]           || ""}  </td>`;
-		output += `<td data-source="Work title"          class="work-title"           >${results[i]["Work title"]             || ""}  </td>`;
+		output += `<td data-source="Opera title"         class="opera-title"           >${results[i]["Opera title"]             || ""}  </td>`;
 		output += `<td data-source="Theater"             class="theater"              >${results[i]["Theater"]                || ""}  </td>`;
 		output += `<td data-source="Composer"            class="composer"             >${removeCurly(results[i]["Composer"]   || "")} </td>`;
 		output += `<td data-source="Librettist"          class="librettist"           >${removeCurly(results[i]["Librettist"] || "")} </td>`;
@@ -761,7 +736,7 @@ function filterResults(input, field, query) {
 		return input;
 	}
 	var queryPieces = "";
-	if (field === "Work title") {
+	if (field === "Opera title") {
 		queryPieces = splitQueryIntoPieces(query);
 	}
 
@@ -779,7 +754,8 @@ function filterResults(input, field, query) {
 			if (input[i][field] && input[i][field].match(query)) {
 				output.push(input[i]);
 			}
-		} else if (field === "Work title") {
+		} else if (field === "Opera title") {
+console.error("OPERATITLE", input[i]);
 			if (freeTextSearch(input[i][field], queryPieces)) {
 				output.push(input[i]);
 			}
@@ -800,6 +776,7 @@ function filterResults(input, field, query) {
 //
 
 function freeTextSearch(string, queryArray) {
+console.log("FREETEXTSEARCH", string);
 	string = string.toLowerCase();
 	for (let i=0; i<queryArray.length; i++) {
 		if (queryArray[i] === "") {
@@ -818,7 +795,7 @@ function freeTextSearch(string, queryArray) {
 //
 // splitQueryIntoPieces == used to allow multiple word searching in titles.
 //    returns an array of the search queryies.
-// 
+//
 
 function splitQueryIntoPieces(input) {
 	if (!input) {
@@ -886,9 +863,9 @@ function displayEntryCount(count, target) {
 	}
 	let output = count;
 	if (count == 1) {
-		output += " entry";
+		output += " opera";
 	} else{
-		output += " entries";
+		output += " operas";
 	}
 	element.innerHTML = output;
 }
@@ -905,7 +882,7 @@ function adjustColumnVisibility() {
 		let source = checkboxes[i].dataset.source;
 		let state = checkboxes[i].checked;
 		adjustColumnVisibility2(source, state);
-	} 
+	}
 }
 
 
@@ -913,7 +890,7 @@ function adjustColumnVisibility() {
 //////////////////////////////
 //
 // adjustColumnVisibility2 --
-// 
+//
 
 function adjustColumnVisibility2(source, state) {
 	let elements = document.querySelectorAll(`td[data-source="${source}"], th[data-source="${source}"]`);
@@ -925,6 +902,17 @@ function adjustColumnVisibility2(source, state) {
 			elements[i].style.display = "none";
 		}
 	}
+}
+
+
+
+//////////////////////////////
+//
+// processColumn --
+//
+
+function processColumn(event) {
+	adjustColumnVisibility();
 }
 
 

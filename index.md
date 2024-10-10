@@ -13,7 +13,8 @@ layout: home
     id="help-button" target="_blank">?</a>
 
 <center>
-    <h1 class="title"> Venetian Opera 1660–1761</h1>
+    <h1 class="title"> Venetian Opera Productions </h1>
+    <h2 class="title"> 1660–1760 </h2>
 </center>
 
 <div id="search-fields" class="hidden"></div>
