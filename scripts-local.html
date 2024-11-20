@@ -253,13 +253,16 @@ function buildSelect(data, source) {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else if  (source === "Balli") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
-		} else if  (source === "Intermezzi (comic)") {
-			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" checked>`;
 		}
 	}
 
+	if (source === "Intermezzi (comic)") {
+		output += buildSelectIntermezzi(data, source);
+		output += "</div>";
+		return output;
+	}
 	if (source == "Composer") {
 		output += buildSelectPerson(data, source);
 		output += "</div>";
@@ -380,6 +383,69 @@ function buildSelectScore(data, source) {
 			output += ` title="${name}"`;
 		}
 		output += ` value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+	}
+	output += "</select>\n";
+
+	return output;
+}
+
+
+//////////////////////////////
+//
+// buildSelectIntermezzi -- Create select menu for intermezzi.  
+//    If the name is enclosed in curly brackets, extract only that
+//    text (separate entries for separate pairs of brackets) for
+//    entries in the select menu.
+//
+
+function buildSelectIntermezzi(data, source) {
+	let holder = {};
+	for (let i=0; i<data.length; i++) {
+		let d = data[i][source];
+		if (!d) {
+			continue;
+		}
+		d = d.replace(/\(.*?\)/g, "");
+		d = d.replace(/\[.*?\]/g, "");
+		d = d.replace(/,? et al\.?/g, "");
+		d = d.replace(/\?/g, "");
+		d = d.replace(/^\s+/, "");
+		d = d.replace(/\s+$/, "");
+		let matches = d.match(/\{(.*?)\}/g);
+		if (matches) {
+			for (let j=0; j<matches.length; j++) {
+				let value = matches[j];
+				value = value.replace(/[{}]/g, "");
+				if (typeof holder[value] === "undefined") {
+					holder[value] = 1;
+				} else {
+					holder[value]++;
+				}
+			}
+		} else {
+			if (!d) {
+				console.warn("Cannot find", data[i][source], "VALUE", d, "SOURCE", source);
+			}
+			if (typeof holder[d] === "undefined") {
+				holder[d] = 1;
+			} else {
+				holder[d]++;
+			}
+		}
+	}
+
+	let keys = Object.keys(holder).sort();
+
+	let output = "";
+	output += `<select onchange="doSearch()"`;
+	output += ` data-field="${source}">\n`;
+	output += `<option class="first" value="">${source}</option>\n`;
+	for (let i=0; i<keys.length; i++) {
+		if (keys[i] === undefined) {
+			console.warn("KEY", i, "IS UNDEFINED");
+			continue;
+		}
+		output += `<option class="rest" value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
 	}
 	output += "</select>\n";
 
@@ -513,13 +579,13 @@ function displaySearchResults(results, target) {
 		output += `<td data-source="Dedicatee"           class="dedicatee"            >${removeCurly(results[i]["Dedicatee"]  || "")} </td>`;
 		output += `<td data-source="Dedicatee jurisdiction" class="dedicatee-jurisdiction"  >${results[i]["Dedicatee jurisdiction"]    || ""}  </td>`;
 		output += `<td data-source="Dedicatee residence" class="dedicatee-residence"  >${results[i]["Dedicatee residence"]    || ""}  </td>`;
-		// output += `<td data-source="Dedicatee map"       class="dedicatee-map"        >${results[i]["Dedicatee map"]          || ""}  </td>`;
+		// output += `<td data-source="Dedicatee map"    class="dedicatee-map"        >${results[i]["Dedicatee map"]          || ""}  </td>`;
 		output += `<td data-source="Score"               class="score"                >${results[i]["Score"]                  || ""}  </td>`;
 		output += `<td data-source="Misc. arias"         class="misc-arias"           >${results[i]["Misc. arias"]            || ""}  </td>`;
 		output += `<td data-source="Balli"               class="balli"                >${results[i]["Balli"]                  || ""}  </td>`;
-		output += `<td data-source="Intermezzi (comic)"  class="intermezzi-comic"     >${results[i]["Intermezzi (comic)"]     || ""}  </td>`;
+		output += `<td data-source="Intermezzi (comic)"  class="intermezzi-comic"     >${removeCurly(results[i]["Intermezzi (comic)"]     || "")}  </td>`;
 		output += `<td data-source="Dramatic genre"      class="dramatic-genre"       >${results[i]["Dramatic genre"]         || ""}  </td>`;
-		output += `<td data-source="Theatrical season"              class="season"               >${results[i]["Theatrical season"]                 || ""}  </td>`;
+		output += `<td data-source="Theatrical season"   class="season"               >${results[i]["Theatrical season"]      || ""}  </td>`;
 		output += `<td data-source="Modern year"         class="modern-year"          >${results[i]["Modern year"]            || ""}  </td>`;
 		output += "</tr>";
 	}
@@ -754,8 +820,11 @@ function filterResults(input, field, query) {
 			if (input[i][field] && input[i][field].match(query)) {
 				output.push(input[i]);
 			}
+		} else if (field === "Intermezzi (comic)") {
+			if (input[i][field] && input[i][field].match(query)) {
+				output.push(input[i]);
+			}
 		} else if (field === "Opera title") {
-console.error("OPERATITLE", input[i]);
 			if (freeTextSearch(input[i][field], queryPieces)) {
 				output.push(input[i]);
 			}
