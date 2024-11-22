@@ -53,7 +53,7 @@ function storeMetadata(metadata) {
 			entry.Score = markupScoreField(entry.Score);
 		}
 		if (entry["Misc. arias"]) {
-			entry["Misc. arias"] = entry["Misc. arias"].replace(/arias?:?/gi, "");
+			entry["Misc. arias"] = markupScoreField(entry["Misc. arias"].replace(/arias?:?/gi, ""));
 		}
 		if (entry["Sorting date"]) {
 			let matches = entry["Sorting date"].match(/(1\d{3})/);
@@ -249,8 +249,6 @@ function buildSelect(data, source) {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else if  (source === "Dedicatee residence") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
-		} else if  (source === "Misc. arias") {
-			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else if  (source === "Balli") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else {
@@ -279,6 +277,11 @@ function buildSelect(data, source) {
 		return output;
 	}
 	if (source == "Score") {
+		output += buildSelectScore(data, source);
+		output += "</div>";
+		return output;
+	}
+	if (source == "Misc. arias") {
 		output += buildSelectScore(data, source);
 		output += "</div>";
 		return output;
@@ -679,6 +682,9 @@ function doSearch() {
 		if (field == "Score") {
 			continue;
 		}
+		if (field == "Misc. arias") {
+			continue;
+		}
 		results = filterResults(results, field, query);
 	}
 
@@ -694,9 +700,38 @@ function doSearch() {
 
 	results = filterByYearRange(results);
 	results = filterByScore(results);
+	results = filterByMiscArias(results);
 
 	displaySearchResults(results, "#search-results");
 	VENOP.results = results;
+}
+
+
+
+//////////////////////////////
+//
+// filterByMiscArias --
+//
+
+function filterByMiscArias(results) {
+	let value = document.querySelector(`select[data-field="Misc. arias"]`).value;
+	if (!value) {
+		return results;
+	}
+	let newResults = [];
+	for (let i=0; i<results.length; i++) {
+		let score = results[i]["Misc. arias"];
+		if (!score) {
+			continue;
+		}
+
+		let position = score.indexOf(value);
+		if (position >= 0) {
+			newResults.push(results[i]);
+		}
+	}
+	// console.log("NEW RESULTS", newResults);
+	return newResults;
 }
 
 
