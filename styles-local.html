@@ -139,14 +139,17 @@ table.opera th.dedicatee, table.opera td.dedicatee {
 
 
 input, select {
-	border: 1px solid antiquewhite;
+	/* border: 1px solid antiquewhite; */
+	border: 1px solid black;
 	max-width: 325px;
 	font-size: 1.65rem;
 	margin: 3px;
 	padding: 5px;
-	color: antiquewhite;
+	/* color: antiquewhite; */
+	color: black;
 	/* background: rgba(53, 26, 10, 1.0); #351a0a with opacity */
-	background: black;
+	/* background: black; */
+	background: antiquewhite;
 }
 
 
@@ -213,6 +216,8 @@ option.first {
 	position: relative;
 	top: 2px;
 	margin-left: 20px;
+	width: 180px;
+	text-align: right;
 	font-size: 2.0rem;
 	font-family: Tahoma;
 	font-weight: bold;
@@ -268,8 +273,10 @@ a, a:visited, a:hover, a:active, a:focus {
 }
 
 #title-search::placeholder {
-	color: antiquewhite;
-	opacity: 0.9;
+	/* color: antiquewhite; */
+	color: black;
+	font-style: italic;
+	opacity: 0.95;
 }
 
 #title-search:not(:placeholder-shown) {

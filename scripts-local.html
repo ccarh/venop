@@ -47,7 +47,7 @@ function storeMetadata(metadata) {
 	for (let i=0; i<VENOP.dataArray.length; i++) {
 		let entry = VENOP.dataArray[i];
 		// entry.Key = entry["Ordinal No."];
-		entry.Key = entry["Sorting date"];
+		entry.Key = entry["Date of premiere"];
 		if (entry.Score) {
 			// entry.Score = entry.Score.replace(/scores?:?/gi, "");
 			entry.Score = markupScoreField(entry.Score);
@@ -55,8 +55,8 @@ function storeMetadata(metadata) {
 		if (entry["Misc. arias"]) {
 			entry["Misc. arias"] = markupScoreField(entry["Misc. arias"].replace(/arias?:?/gi, ""));
 		}
-		if (entry["Sorting date"]) {
-			let matches = entry["Sorting date"].match(/(1\d{3})/);
+		if (entry["Date of premiere"]) {
+			let matches = entry["Date of premiere"].match(/(1\d{3})/);
 			if (matches) {
 				entry["Min. year"] = matches[1];
 				entry["Max. year"] = matches[1];
@@ -123,7 +123,7 @@ function displaySearchFields(data, target) {
 	output += `<div id="search-count"></div>`;
 	output += `&nbsp;`;
 	output += buildTextSearch("Opera title");
-	output += buildSelect(data, "Sorting date");
+	output += buildSelect(data, "Date of premiere");
 	output += buildSelect(data, "Theater");
 	output += buildSelect(data, "Composer");
 	output += buildSelect(data, "Librettist");
@@ -241,7 +241,7 @@ function buildSelect(data, source) {
 	let output = "";
 	output += "<div style='display:inline-block; white-space: nowrap'>";
 	if (!((source == "Min. year") || (source == "Max. year"))) {
-		if  (source === "Sorting date") {
+		if  (source === "Date of premiere") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else if  (source === "Dedicatee") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
@@ -251,10 +251,27 @@ function buildSelect(data, source) {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else if  (source === "Balli") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Date of premiere") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Score") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Misc. arias") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Intermezzi (comic)") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" checked>`;
 		}
 	}
+
+// Opera title 
+// Theater
+// Composer
+// Theatrical season
+// Dramatic Genre
+// Librettest
+// Modern year
+
 
 	if (source === "Intermezzi (comic)") {
 		output += buildSelectIntermezzi(data, source);
@@ -553,7 +570,7 @@ function displaySearchResults(results, target) {
 
 	output += "<tr class='sticky'>";
 	// output += `<th data-source="Key"                    onclick='sortBy("Key")'                    title="sort by Key"                    class="resizable key"                   >Key                </th>`;
-	output += `<th data-source="Sorting date"           onclick="sortBy('Sorting date')'           title="sort by Sorting date"           class="resizable nobreak sorting-date"  >Sorting date       </th>`;
+	output += `<th data-source="Date of premiere"           onclick="sortBy('Date of premiere')'           title="sort by Date of premiere"           class="resizable nobreak sorting-date"  >Date of premiere       </th>`;
 	output += `<th data-source="Opera title"            onclick="sortBy('Opera title')"            title="sort by Opera title"            class="resizable work"                  >Opera title        </th>`;
 	output += `<th data-source="Theater"                onclick="sortBy('Theater')"                title="sort by Theater"                class="resizable theater"               >Theater            </th>`;
 	output += `<th data-source="Composer"               onclick="sortBy('Composer')"               title="sort by Composer"               class="resizable composer"              >Composer           </th>`;
@@ -574,7 +591,7 @@ function displaySearchResults(results, target) {
 	for (let i=0; i<results.length; i++) {
 		output += "<tr>";
 		// output += `<td data-source="Key"                 class="key"                  >${results[i]["Key"]                    || ""}  </td>`;
-		output += `<td data-source="Sorting date"        class="sorting-date"         >${results[i]["Sorting date"]           || ""}  </td>`;
+		output += `<td data-source="Date of premiere"        class="sorting-date"         >${results[i]["Date of premiere"]           || ""}  </td>`;
 		output += `<td data-source="Opera title"         class="opera-title"           >${results[i]["Opera title"]             || ""}  </td>`;
 		output += `<td data-source="Theater"             class="theater"              >${results[i]["Theater"]                || ""}  </td>`;
 		output += `<td data-source="Composer"            class="composer"             >${removeCurly(results[i]["Composer"]   || "")} </td>`;
@@ -808,7 +825,7 @@ console.warn("MINYEAR", minyear, "MAXYEAR", maxyear);
 
 	let newResults = [];
 	for (let i=0; i<results.length; i++) {
-		let sortingDate = results[i]["Sorting date"];
+		let sortingDate = results[i]["Date of premiere"];
 		if (!sortingDate) {
 			continue;
 		}
