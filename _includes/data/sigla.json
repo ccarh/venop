@@ -40,12 +40,37 @@
       "Name": "Bibliothèque royale de Belgique (KBR) - Koninklijke Bibliotheek van België (KBR), Bruxelles; Brussel (B-Br)"
    },
    {
+      "RISM siglum": "B-Dsa",
+      "Corrections": "D-Bsa",
+      "Number": 20000001,
+      "Siglum URL": "https://rism.online/sigla/D-Bsa",
+      "Number URL": "https://rism.online/institutions/20000001",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/20000001",
+      "Name": "Sing-Akademie zu Berlin, Notenarchiv, Berlin (D-Bsa)"
+   },
+   {
       "RISM siglum": "B-Lc",
       "Number": 30000449,
       "Siglum URL": "https://rism.online/sigla/B-Lc",
       "Number URL": "https://rism.online/institutions/30000449",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000449",
       "Name": "Conservatoire Royal de Liège, Bibliothèque, Liège (B-Lc)"
+   },
+   {
+      "RISM siglum": "CH-BEl",
+      "Number": 30000004,
+      "Siglum URL": "https://rism.online/sigla/CH-BEl",
+      "Number URL": "https://rism.online/institutions/30000004",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000004",
+      "Name": "Schweizerische Nationalbibliothek (NB), Bern (CH-BEl)"
+   },
+   {
+      "RISM siglum": "CH-Zz",
+      "Number": 30000014,
+      "Siglum URL": "https://rism.online/sigla/CH-Zz",
+      "Number URL": "https://rism.online/institutions/30000014",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000014",
+      "Name": "Zentralbibliothek, Zürich (CH-Zz)"
    },
    {
       "RISM siglum": "CS-K",
@@ -55,6 +80,14 @@
       "Number URL": "https://rism.online/institutions/30000183",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000183",
       "Name": "Zámecký hudební archiv, Český Krumlov"
+   },
+   {
+      "RISM siglum": "CZ-Pak",
+      "Number": 30000027,
+      "Siglum URL": "https://rism.online/sigla/CZ-Pak",
+      "Number URL": "https://rism.online/institutions/30000027",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000027",
+      "Name": "Archiv Pražského hradu, Praha (CZ-Pak)"
    },
    {
       "RISM siglum": "D-AN",
@@ -82,14 +115,6 @@
       "Name": "Staatsbibliothek zu Berlin - Preußischer Kulturbesitz, Musikabteilung, Berlin (D-B)"
    },
    {
-      "RISM siglum": "D-DS",
-      "Number": 30000036,
-      "Siglum URL": "https://rism.online/sigla/D-DS",
-      "Number URL": "https://rism.online/institutions/30000036",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000036",
-      "Name": "Universitäts- und Landesbibliothek, Musikabteilung, Darmstadt (D-DS)"
-   },
-   {
       "RISM siglum": "D-Dl",
       "Number": 30000042,
       "Siglum URL": "https://rism.online/sigla/D-Dl",
@@ -105,6 +130,22 @@
       "Number URL": "https://rism.online/institutions/30000042",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000042",
       "Name": "Sächsische Landesbibliothek - Staats- und Universitätsbibliothek (SLUB), Dresden (D-Dl)"
+   },
+   {
+      "RISM siglum": "D-DO",
+      "Number": 30000264,
+      "Siglum URL": "https://rism.online/sigla/D-DO",
+      "Number URL": "https://rism.online/institutions/30000264",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000264",
+      "Name": "Fürstlich Fürstenbergische Hofbibliothek, Donaueschingen (D-DO)"
+   },
+   {
+      "RISM siglum": "D-DS",
+      "Number": 30000036,
+      "Siglum URL": "https://rism.online/sigla/D-DS",
+      "Number URL": "https://rism.online/institutions/30000036",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000036",
+      "Name": "Universitäts- und Landesbibliothek, Musikabteilung, Darmstadt (D-DS)"
    },
    {
       "RISM siglum": "D-HAmi",
@@ -131,6 +172,14 @@
       "Name": "Öttingen-Wallersteinsche Bibliothek, Harburg (Schwaben) (D-HR)"
    },
    {
+      "RISM siglum": "D-Hs",
+      "Number": 30000225,
+      "Siglum URL": "https://rism.online/sigla/D-Hs",
+      "Number URL": "https://rism.online/institutions/30000225",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000225",
+      "Name": "Staats- und Universitätsbibliothek Carl von Ossietzky, Musiksammlung, Hamburg (D-Hs)"
+   },
+   {
       "RISM siglum": "D-HVl",
       "Number": 30000823,
       "Siglum URL": "https://rism.online/sigla/D-HVl",
@@ -139,12 +188,20 @@
       "Name": "Gottfried Wilhelm Leibniz Bibliothek - Niedersächsische Landesbibliothek, Hannover (D-HVl)"
    },
    {
-      "RISM siglum": "D-Hs",
-      "Number": 30000225,
-      "Siglum URL": "https://rism.online/sigla/D-Hs",
-      "Number URL": "https://rism.online/institutions/30000225",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000225",
-      "Name": "Staats- und Universitätsbibliothek Carl von Ossietzky, Musiksammlung, Hamburg (D-Hs)"
+      "RISM siglum": "D-HVs",
+      "Number": 30000824,
+      "Siglum URL": "https://rism.online/sigla/D-HVs",
+      "Number URL": "https://rism.online/institutions/30000824",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000824",
+      "Name": "Stadtbibliothek, Musikbibliothek, Hannover (D-HVs)"
+   },
+   {
+      "RISM siglum": "D-KA",
+      "Number": 30000839,
+      "Siglum URL": "https://rism.online/sigla/D-KA",
+      "Number URL": "https://rism.online/institutions/30000839",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000839",
+      "Name": "Badische Landesbibliothek, Musiksammlung, Karlsruhe (D-KA)"
    },
    {
       "RISM siglum": "D-Kl",
@@ -173,31 +230,6 @@
       "Name": "Universitätsbibliothek Leipzig"
    },
    {
-      "RISM siglum": "D-MEIr",
-      "Number": 30000056,
-      "Siglum URL": "https://rism.online/sigla/D-MEIr",
-      "Number URL": "https://rism.online/institutions/30000056",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000056",
-      "Name": "Meininger Museen, Sammlung Musikgeschichte, Max-Reger-Archiv, Meiningen (D-MEIr)"
-   },
-   {
-      "RISM siglum": "D-MUs",
-      "Corrections": "D-MÜs",
-      "Number": 30000239,
-      "Siglum URL": "https://rism.online/sigla/D-MÜs",
-      "Number URL": "https://rism.online/institutions/30000239",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000239",
-      "Name": "Santini-Bibliothek, Münster (D-MÜs)"
-   },
-   {
-      "RISM siglum": "D-MÜs",
-      "Number": 30000239,
-      "Siglum URL": "https://rism.online/sigla/D-MÜs",
-      "Number URL": "https://rism.online/institutions/30000239",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000239",
-      "Name": "Santini-Bibliothek, Münster (D-MÜs)"
-   },
-   {
       "RISM siglum": "D-Mb",
       "Number": 30000879,
       "Siglum URL": "https://rism.online/sigla/D-Mb",
@@ -214,6 +246,32 @@
       "Name": "Bayerische Staatsbibliothek, München (D-Mbs)"
    },
    {
+      "RISM siglum": "D-MEIr",
+      "Number": 30000056,
+      "Siglum URL": "https://rism.online/sigla/D-MEIr",
+      "Number URL": "https://rism.online/institutions/30000056",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000056",
+      "Name": "Meininger Museen, Sammlung Musikgeschichte, Max-Reger-Archiv, Meiningen (D-MEIr)"
+   },
+   {
+      "RISM siglum": "D-Mgs",
+      "Corrections": "D-MGs",
+      "Number": 30000906,
+      "Siglum URL": "https://rism.online/sigla/D-MGs",
+      "Number URL": "https://rism.online/institutions/30000906",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000906",
+      "Name": "Hessisches Staatsarchiv, Marburg (D-MGs)"
+   },
+   {
+      "RISM siglum": "D-MUs",
+      "Corrections": "D-MÜs",
+      "Number": 30000239,
+      "Siglum URL": "https://rism.online/sigla/D-MÜs",
+      "Number URL": "https://rism.online/institutions/30000239",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000239",
+      "Name": "Santini-Bibliothek, Münster (D-MÜs)"
+   },
+   {
       "RISM siglum": "D-Müs",
       "Corrections": "D-MÜs",
       "Number": 30000239,
@@ -223,12 +281,37 @@
       "Name": "Santini-Bibliothek, Münster (D-MÜs)"
    },
    {
-      "RISM siglum": "D-ROu",
+      "RISM siglum": "D-RH",
+      "Number": 30000248,
+      "Siglum URL": "https://rism.online/sigla/D-RH",
+      "Number URL": "https://rism.online/institutions/30000248",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000248",
+      "Name": "Fürstlich zu Bentheim-Tecklenburgische Musikbibliothek, Rheda (D-RH)"
+   },
+   {
+      "RISM siglum": "D-Rou",
+      "Corrections": "D-ROu",
       "Number": 30000062,
       "Siglum URL": "https://rism.online/sigla/D-ROu",
       "Number URL": "https://rism.online/institutions/30000062",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000062",
       "Name": "Universitätsbibliothek Rostock, Sondersammlungen, Rostock (D-ROu)"
+   },
+   {
+      "RISM siglum": "D-SHs",
+      "Number": 30000116,
+      "Siglum URL": "https://rism.online/sigla/D-SHs",
+      "Number URL": "https://rism.online/institutions/30000116",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000116",
+      "Name": "Stadtbibliothek \"Johann Karl Wezel\", Sondershausen (D-SHs)"
+   },
+   {
+      "RISM siglum": "D-SÜN",
+      "Number": 30003705,
+      "Siglum URL": "https://rism.online/sigla/D-SÜN",
+      "Number URL": "https://rism.online/institutions/30003705",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30003705",
+      "Name": "Schloss, Sünching (D-SÜN)"
    },
    {
       "RISM siglum": "D-SWl",
@@ -247,28 +330,20 @@
       "Name": "Herzog August Bibliothek, Wolfenbüttel (D-W)"
    },
    {
-      "RISM siglum": "D-WD",
-      "Number": 30001037,
-      "Siglum URL": "https://rism.online/sigla/D-WD",
-      "Number URL": "https://rism.online/institutions/30001037",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001037",
-      "Name": "Musiksammlung der Grafen von Schönborn-Wiesentheid, Wiesentheid (D-WD)"
-   },
-   {
-      "RISM siglum": "D-WINtj",
-      "Number": 30001053,
-      "Siglum URL": "https://rism.online/sigla/D-WINtj",
-      "Number URL": "https://rism.online/institutions/30001053",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001053",
-      "Name": "Gräflich Toerring-Jettenbachsche Bibliothek, Winhöring (D-WINtj)"
-   },
-   {
       "RISM siglum": "D-Wa",
       "Number": 30002839,
       "Siglum URL": "https://rism.online/sigla/D-Wa",
       "Number URL": "https://rism.online/institutions/30002839",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30002839",
       "Name": "Niedersächsisches Landesarchiv - Standort Wolfenbüttel, Wolfenbüttel (D-Wa)"
+   },
+   {
+      "RISM siglum": "D-WD",
+      "Number": 30001037,
+      "Siglum URL": "https://rism.online/sigla/D-WD",
+      "Number URL": "https://rism.online/institutions/30001037",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001037",
+      "Name": "Musiksammlung der Grafen von Schönborn-Wiesentheid, Wiesentheid (D-WD)"
    },
    {
       "RISM siglum": "D-Wd",
@@ -278,6 +353,14 @@
       "Number URL": "https://rism.online/institutions/30001037",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001037",
       "Name": "Gräflich von Schönbornsche Musikbibliothek, Wiesentheid"
+   },
+   {
+      "RISM siglum": "D-WINtj",
+      "Number": 30001053,
+      "Siglum URL": "https://rism.online/sigla/D-WINtj",
+      "Number URL": "https://rism.online/institutions/30001053",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001053",
+      "Name": "Gräflich Toerring-Jettenbachsche Bibliothek, Winhöring (D-WINtj)"
    },
    {
       "RISM siglum": "D-Wm",
@@ -360,6 +443,14 @@
       "Name": "Public Libraries, Central Library, Cardiff (GB-CDp)"
    },
    {
+      "RISM siglum": "GB-Cfm",
+      "Number": 30001537,
+      "Siglum URL": "https://rism.online/sigla/GB-Cfm",
+      "Number URL": "https://rism.online/institutions/30001537",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001537",
+      "Name": "Fitzwilliam Museum, Cambridge (GB-Cfm)"
+   },
+   {
       "RISM siglum": "GB-CMc",
       "Corrections": "GB-Cmc ",
       "Number": 30001542,
@@ -367,14 +458,6 @@
       "Number URL": "https://rism.online/institutions/30001542",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001542",
       "Name": "Magdalene College, Cambridge (GB-Cmc)"
-   },
-   {
-      "RISM siglum": "GB-Cfm",
-      "Number": 30001537,
-      "Siglum URL": "https://rism.online/sigla/GB-Cfm",
-      "Number URL": "https://rism.online/institutions/30001537",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001537",
-      "Name": "Fitzwilliam Museum, Cambridge (GB-Cfm)"
    },
    {
       "RISM siglum": "GB-Cmc",
@@ -425,6 +508,47 @@
       "Name": "Gresham College, London (GB-Lgc)"
    },
    {
+      "RISM siglum": "GB-Lkc",
+      "Number": 30001590,
+      "Siglum URL": "https://rism.online/sigla/GB-Lkc",
+      "Number URL": "https://rism.online/institutions/30001590",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001590",
+      "Name": "Maughan Library, King's College, University of London, London (GB-Lkc)"
+   },
+   {
+      "RISM siglum": "GB-Ll",
+      "Number": 30003043,
+      "Siglum URL": "https://rism.online/sigla/GB-Ll",
+      "Number URL": "https://rism.online/institutions/30003043",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30003043",
+      "Name": "London Library, London (GB-Ll)"
+   },
+   {
+      "RISM siglum": "GB-Lml",
+      "Number": 30006603,
+      "Siglum URL": "https://rism.online/sigla/GB-Lml",
+      "Number URL": "https://rism.online/institutions/30006603",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30006603",
+      "Name": "Museum of London, London (GB-Lml)"
+   },
+   {
+      "RISM siglum": "GB-Lprivate",
+      "Corrections": "GB-Lhaas",
+      "Number": 30001589,
+      "Siglum URL": "https://rism.online/sigla/GB-Lhaas",
+      "Number URL": "https://rism.online/institutions/30001589",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001589",
+      "Name": "Otto Haas private collection, London (GB-Lhaas)"
+   },
+   {
+      "RISM siglum": "GB-Lpro",
+      "Number": 30003039,
+      "Siglum URL": "https://rism.online/sigla/GB-Lpro",
+      "Number URL": "https://rism.online/institutions/30003039",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30003039",
+      "Name": "Public Record Office, London (GB-Lpro)"
+   },
+   {
       "RISM siglum": "GB-Mp",
       "Number": 30001615,
       "Siglum URL": "https://rism.online/sigla/GB-Mp",
@@ -457,6 +581,14 @@
       "Name": "Bodleian Music Faculty Library, Oxford (GB-Ouf)"
    },
    {
+      "RISM siglum": "GB-T",
+      "Number": 30001658,
+      "Siglum URL": "https://rism.online/sigla/GB-T",
+      "Number URL": "https://rism.online/institutions/30001658",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001658",
+      "Name": "St. Michael's College Library, Tenbury Wells (GB-T)"
+   },
+   {
       "RISM siglum": "I-BAs",
       "Corrections": "I-Bas",
       "Number": 30000075,
@@ -474,6 +606,14 @@
       "Name": "Museo internazionale e biblioteca della musica di Bologna, Bologna (I-Bc)"
    },
    {
+      "RISM siglum": "I-Bca",
+      "Number": 30001741,
+      "Siglum URL": "https://rism.online/sigla/I-Bca",
+      "Number URL": "https://rism.online/institutions/30001741",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001741",
+      "Name": "Biblioteca comunale dell'Archiginnasio, Bologna (I-Bca)"
+   },
+   {
       "RISM siglum": "I-Bgi",
       "Corrections": "I-BGi",
       "Number": 30001750,
@@ -481,6 +621,46 @@
       "Number URL": "https://rism.online/institutions/30001750",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001750",
       "Name": "Biblioteca musicale Gaetano Donizetti, Bergamo (I-BGi)"
+   },
+   {
+      "RISM siglum": "I-Bsp",
+      "Number": 30000256,
+      "Siglum URL": "https://rism.online/sigla/I-Bsp",
+      "Number URL": "https://rism.online/institutions/30000256",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000256",
+      "Name": "Archivio musicale della Basilica di San Petronio, Bologna (I-Bsp)"
+   },
+   {
+      "RISM siglum": "I-CCc",
+      "Number": 30001761,
+      "Siglum URL": "https://rism.online/sigla/I-CCc",
+      "Number URL": "https://rism.online/institutions/30001761",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001761",
+      "Name": "Biblioteca comunale Giosuè Carducci, Città di Castello (I-CCc)"
+   },
+   {
+      "RISM siglum": "I-CF",
+      "Number": 30001766,
+      "Siglum URL": "https://rism.online/sigla/I-CF",
+      "Number URL": "https://rism.online/institutions/30001766",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001766",
+      "Name": "Archivio capitolare del Duomo (S. Maria Assunta), Cividale del Friuli (I-CF)"
+   },
+   {
+      "RISM siglum": "I-CMbc",
+      "Number": 30001768,
+      "Siglum URL": "https://rism.online/sigla/I-CMbc",
+      "Number URL": "https://rism.online/institutions/30001768",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001768",
+      "Name": "Biblioteca civica Giovanni Canna, Casale Monferrato (I-CMbc)"
+   },
+   {
+      "RISM siglum": "I-Fb",
+      "Number": 30004727,
+      "Siglum URL": "https://rism.online/sigla/I-Fb",
+      "Number URL": "https://rism.online/institutions/30004727",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30004727",
+      "Name": "Biblioteca Berenson - Morrill Music Library, Firenze (I-Fb)"
    },
    {
       "RISM siglum": "I-Fc",
@@ -507,29 +687,20 @@
       "Name": "Biblioteca del Conservatorio di musica Niccolò Paganini, Genova (I-Gl)"
    },
    {
+      "RISM siglum": "I-MAC",
+      "Number": 30001833,
+      "Siglum URL": "https://rism.online/sigla/I-MAC",
+      "Number URL": "https://rism.online/institutions/30001833",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001833",
+      "Name": "Biblioteca comunale Mozzi Borgetti, Macerata (I-MAC)"
+   },
+   {
       "RISM siglum": "I-MC",
       "Number": 30001834,
       "Siglum URL": "https://rism.online/sigla/I-MC",
       "Number URL": "https://rism.online/institutions/30001834",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001834",
       "Name": "Biblioteca dell'Abbazia di Montecassino, Montecassino (I-MC)"
-   },
-   {
-      "RISM siglum": "I-MOe",
-      "Number": 30001837,
-      "Siglum URL": "https://rism.online/sigla/I-MOe",
-      "Number URL": "https://rism.online/institutions/30001837",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001837",
-      "Name": "Biblioteca Estense Universitaria, Modena (I-MOe)"
-   },
-   {
-      "RISM siglum": "I-MVav",
-      "Corrections": "I-MAav",
-      "Number": 30000143,
-      "Siglum URL": "https://rism.online/sigla/I-MAav",
-      "Number URL": "https://rism.online/institutions/30000143",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000143",
-      "Name": "Biblioteca dell'Accademia nazionale virgiliana di scienze lettere e arti, Mantova (I-MAav)"
    },
    {
       "RISM siglum": "I-Mc",
@@ -540,12 +711,38 @@
       "Name": "Biblioteca del Conservatorio Statale di Musica Giuseppe Verdi, Milano (I-Mc)"
    },
    {
+      "RISM siglum": "I-Mc",
+      "Number": 30000238,
+      "Siglum URL": "https://rism.online/sigla/I-Mc",
+      "Number URL": "https://rism.online/institutions/30000238",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000238",
+      "Name": "Biblioteca del Conservatorio Statale di Musica Giuseppe Verdi, Milano (I-Mc)"
+   },
+   {
+      "RISM siglum": "I-Moe",
+      "Corrections": "I-MOe",
+      "Number": 30001837,
+      "Siglum URL": "https://rism.online/sigla/I-MOe",
+      "Number URL": "https://rism.online/institutions/30001837",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001837",
+      "Name": "Biblioteca Estense Universitaria, Modena (I-MOe)"
+   },
+   {
       "RISM siglum": "I-Mr",
       "Number": 30003470,
       "Siglum URL": "https://rism.online/sigla/I-Mr",
       "Number URL": "https://rism.online/institutions/30003470",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30003470",
       "Name": "Archivio Storico Ricordi, Milano (I-Mr)"
+   },
+   {
+      "RISM siglum": "I-MVav",
+      "Corrections": "I-MAav",
+      "Number": 30000143,
+      "Siglum URL": "https://rism.online/sigla/I-MAav",
+      "Number URL": "https://rism.online/institutions/30000143",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000143",
+      "Name": "Biblioteca dell'Accademia nazionale virgiliana di scienze lettere e arti, Mantova (I-MAav)"
    },
    {
       "RISM siglum": "I-Nc",
@@ -580,6 +777,14 @@
       "Name": "Biblioteca del Conservatorio di musica Vincenzo Bellini, Palermo (I-PLcon)"
    },
    {
+      "RISM siglum": "I-PS",
+      "Number": 30001896,
+      "Siglum URL": "https://rism.online/sigla/I-PS",
+      "Number URL": "https://rism.online/institutions/30001896",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001896",
+      "Name": "Archivio capitolare, Pistoia (I-PS)"
+   },
+   {
       "RISM siglum": "I-Rc",
       "Number": 30000230,
       "Siglum URL": "https://rism.online/sigla/I-Rc",
@@ -603,6 +808,14 @@
       "Number URL": "https://rism.online/institutions/30001904",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001904",
       "Name": "Archivio Doria Pamphilj, Roma (I-Rdp)"
+   },
+   {
+      "RISM siglum": "I-Rig",
+      "Number": 30000178,
+      "Siglum URL": "https://rism.online/sigla/I-Rig",
+      "Number URL": "https://rism.online/institutions/30000178",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000178",
+      "Name": "Biblioteca privata Giancarlo Rostirolla, Roma (I-Rrostirolla)"
    },
    {
       "RISM siglum": "I-Rp",
@@ -670,15 +883,6 @@
       "Name": "Biblioteca nazionale universitaria, Torino (I-Tn)"
    },
    {
-      "RISM siglum": "I-VIRE",
-      "Corrections": "I-Vire",
-      "Number": 30003941,
-      "Siglum URL": "https://rism.online/sigla/I-Vire",
-      "Number URL": "https://rism.online/institutions/30003941",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30003941",
-      "Name": "Istituzioni di Ricovero e di Educazione (IRE), Biblioteca e Archivio, Venezia (I-Vire)"
-   },
-   {
       "RISM siglum": "I-Vc",
       "Number": 30001975,
       "Siglum URL": "https://rism.online/sigla/I-Vc",
@@ -693,6 +897,15 @@
       "Number URL": "https://rism.online/institutions/30001976",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30001976",
       "Name": "Biblioteca di Studi Teatrali della Casa di Carlo Goldoni, Venezia (I-Vcg)"
+   },
+   {
+      "RISM siglum": "I-VIRE",
+      "Corrections": "I-Vire",
+      "Number": 30003941,
+      "Siglum URL": "https://rism.online/sigla/I-Vire",
+      "Number URL": "https://rism.online/institutions/30003941",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30003941",
+      "Name": "Istituzioni di Ricovero e di Educazione (IRE), Biblioteca e Archivio, Venezia (I-Vire)"
    },
    {
       "RISM siglum": "I-Vlevi",
@@ -727,6 +940,14 @@
       "Name": "Biblioteca do Palácio Nacional da Ajuda, Lisboa (P-La)"
    },
    {
+      "RISM siglum": "PL-Pa",
+      "Number": 30000149,
+      "Siglum URL": "https://rism.online/sigla/PL-Pa",
+      "Number URL": "https://rism.online/institutions/30000149",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000149",
+      "Name": "Archiwum Archidiecezjalne, Poznań (PL-Pa)"
+   },
+   {
       "RISM siglum": "PL-Wn",
       "Number": 30000118,
       "Siglum URL": "https://rism.online/sigla/PL-Wn",
@@ -741,6 +962,22 @@
       "Number URL": "https://rism.online/institutions/30002527",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30002527",
       "Name": "Naučnaja muzykal'naja biblioteka im. S. I. Taneeva Moskovskoj gosudarstvennoj konservatorii im. P. I. Čajkovskogo, Moskva (RUS-Mk)"
+   },
+   {
+      "RISM siglum": "S-B",
+      "Number": 30000151,
+      "Siglum URL": "https://rism.online/sigla/S-B",
+      "Number URL": "https://rism.online/institutions/30000151",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000151",
+      "Name": "Skoklosters slott, Bålsta (S-B)"
+   },
+   {
+      "RISM siglum": "S-L",
+      "Number": 30000153,
+      "Siglum URL": "https://rism.online/sigla/S-L",
+      "Number URL": "https://rism.online/institutions/30000153",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000153",
+      "Name": "Universitetsbiblioteket, Lund (S-L)"
    },
    {
       "RISM siglum": "S-Sk",
@@ -802,6 +1039,39 @@
       "Name": "San Francisco State University, Col. Frank V. de Bellis Collection, San Francisco, CA (US-SFsc)"
    },
    {
+      "RISM siglum": "US-FAy",
+      "Number": 30002275,
+      "Siglum URL": "https://rism.online/sigla/US-FAy",
+      "Number URL": "https://rism.online/institutions/30002275",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30002275",
+      "Name": "Yale University, Lewis Walpole Library, Farmington, CT (US-FAy)"
+   },
+   {
+      "RISM siglum": "US-Idt",
+      "Corrections": "US-IDt",
+      "Number": 30003842,
+      "Siglum URL": "https://rism.online/sigla/US-IDt",
+      "Number URL": "https://rism.online/institutions/30003842",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30003842",
+      "Name": "Harry S. Truman Library, Independence, MO (US-IDt)"
+   },
+   {
+      "RISM siglum": "US-LAuc",
+      "Number": 30002311,
+      "Siglum URL": "https://rism.online/sigla/US-LAuc",
+      "Number URL": "https://rism.online/institutions/30002311",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30002311",
+      "Name": "University of California, William Andrews Clark Memorial Library, Los Angeles, CA (US-LAuc)"
+   },
+   {
+      "RISM siglum": "US-LAum",
+      "Number": 30002310,
+      "Siglum URL": "https://rism.online/sigla/US-LAum",
+      "Number URL": "https://rism.online/institutions/30002310",
+      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30002310",
+      "Name": "University of California, Music Library, Los Angeles, CA (US-LAum)"
+   },
+   {
       "RISM siglum": "US-Nyp",
       "Corrections": "US-NYp",
       "Number": 30000321,
@@ -826,35 +1096,5 @@
       "Number URL": "https://rism.online/institutions/30002492",
       "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30002492",
       "Name": "The Library of Congress, Music Division, Washington, D.C. (US-Wc)"
-   },
-   {
-      "RISM siglum": "US-LAuc",
-      "Number": 30002311,
-      "Siglum URL": "https://rism.online/sigla/US-LAuc",
-      "Number URL": "https://rism.online/institutions/30002311",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30002311",
-      "Name": "University of California, William Andrews Clark Memorial Library, Los Angeles, CA (US-LAuc)"
-   },
-   {
-      "RISM siglum": "I-Rig",
-      "Number": 30000178,
-      "Siglum URL": "https://rism.online/sigla/I-Rig",
-      "Number URL": "https://rism.online/institutions/30000178",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30000178",
-      "Name": "Biblioteca privata Giancarlo Rostirolla, Roma (I-Rrostirolla)"
-   },
-   {
-      "RISM siglum": "US-FAy",
-      "Number": 30002275,
-      "Siglum URL": "https://rism.online/sigla/US-FAy",
-      "Number URL": "https://rism.online/institutions/30002275",
-      "JSON": "https://rism.online/apero/?url=https://rism.online/institutions/30002275",
-      "Name": "Yale University, Lewis Walpole Library, Farmington, CT (US-FAy)"
-   },
-   {
-      "Corrections": "V-CVbav",
-      "Number": 30077306,
-      "Number URL": "https://rism.online/institutions/30077306",
-      "Name": "Biblioteca Apostolica Vaticana, Citta' del Vaticano (V-CVbav)"
    }
 ]

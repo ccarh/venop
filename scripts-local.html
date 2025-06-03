@@ -140,6 +140,7 @@ function displaySearchFields(data, target) {
 	output += buildSelect(data, "Modern year");
 	output += buildSelect(data, "Min. year");
 	output += buildSelect(data, "Max. year");
+	output += buildSelect(data, "Key reference");
 	// output += buildYearRange();
 	output += createClearButton();
 
@@ -259,6 +260,8 @@ function buildSelect(data, source) {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else if  (source === "Intermezzi (comic)") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Key reference") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" checked>`;
 		}
@@ -329,7 +332,11 @@ function buildSelect(data, source) {
 	output += `data-field="${source}">\n`;
 	output += `<option value="">${source}</option>\n`;
 	for (let i=0; i<keys.length; i++) {
-		output+= `<option value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+		if (source === "Key reference") {
+			output+= `<option value="${keys[i]}">${keys[i]}</option>\n`;
+		} else {
+			output+= `<option value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+		}
 	}
 	output += "</select>\n";
 	output += "</div>";
@@ -569,8 +576,8 @@ function displaySearchResults(results, target) {
 	output += "<table class='opera'>";
 
 	output += "<tr class='sticky'>";
-	// output += `<th data-source="Key"                    onclick='sortBy("Key")'                    title="sort by Key"                    class="resizable key"                   >Key                </th>`;
-	output += `<th data-source="Date of premiere"           onclick="sortBy('Date of premiere')'           title="sort by Date of premiere"           class="resizable nobreak sorting-date"  >Date of premiere       </th>`;
+	// output += `<th data-source="Key"                 onclick='sortBy("Key")'                    title="sort by Key"                    class="resizable key"                   >Key                </th>`;
+	output += `<th data-source="Date of premiere"       onclick="sortBy('Date of premiere')'       title="sort by Date of premiere"       class="resizable nobreak sorting-date"  >Date of premiere   </th>`;
 	output += `<th data-source="Opera title"            onclick="sortBy('Opera title')"            title="sort by Opera title"            class="resizable work"                  >Opera title        </th>`;
 	output += `<th data-source="Theater"                onclick="sortBy('Theater')"                title="sort by Theater"                class="resizable theater"               >Theater            </th>`;
 	output += `<th data-source="Composer"               onclick="sortBy('Composer')"               title="sort by Composer"               class="resizable composer"              >Composer           </th>`;
@@ -584,15 +591,16 @@ function displaySearchResults(results, target) {
 	output += `<th data-source="Balli"                  onclick="sortBy('Balli')"                  title="sort by Balli"                  class="resizable balli"                 >Balli              </th>`;
 	output += `<th data-source="Intermezzi (comic)"     onclick="sortBy('Intermezzi (comic)')"     title="sort by Intermezzi"             class="resizable intermezzi-comic"      >Intermezzi (comic) </th>`;
 	output += `<th data-source="Dramatic genre"         onclick="sortBy('Dramatic genre')"         title="sort by Dramatic genre"         class="resizable dramatic-genre"        >Dramatic genre     </th>`;
-	output += `<th data-source="Theatrical season"      onclick="sortBy('Theatrical season')"                 title="sort by Theatrical season"                 class="resizable season"                >Theatrical season             </th>`;
+	output += `<th data-source="Theatrical season"      onclick="sortBy('Theatrical season')"      title="sort by Theatrical season"      class="resizable season"                >Theatrical season  </th>`;
 	output += `<th data-source="Modern year"            onclick="sortBy('Modern year')"            title="sort by Modern year"            class="resizable modern-year"           >Modern year        </th>`;
+	output += `<th data-source="Key reference"          onclick="sortBy('Key reference')"          title="sort by Key reference"          class="resizable key-reference"         >Key reference      </th>`;
 	output += "</tr>";
 
 	for (let i=0; i<results.length; i++) {
 		output += "<tr>";
-		// output += `<td data-source="Key"                 class="key"                  >${results[i]["Key"]                    || ""}  </td>`;
-		output += `<td data-source="Date of premiere"        class="sorting-date"         >${results[i]["Date of premiere"]           || ""}  </td>`;
-		output += `<td data-source="Opera title"         class="opera-title"           >${results[i]["Opera title"]             || ""}  </td>`;
+		// output += `<td data-source="Key"              class="key"                  >${results[i]["Key"]                    || ""}  </td>`;
+		output += `<td data-source="Date of premiere"    class="sorting-date"         >${results[i]["Date of premiere"]       || ""}  </td>`;
+		output += `<td data-source="Opera title"         class="opera-title"          >${results[i]["Opera title"]            || ""}  </td>`;
 		output += `<td data-source="Theater"             class="theater"              >${results[i]["Theater"]                || ""}  </td>`;
 		output += `<td data-source="Composer"            class="composer"             >${removeCurly(results[i]["Composer"]   || "")} </td>`;
 		output += `<td data-source="Librettist"          class="librettist"           >${removeCurly(results[i]["Librettist"] || "")} </td>`;
@@ -607,6 +615,7 @@ function displaySearchResults(results, target) {
 		output += `<td data-source="Dramatic genre"      class="dramatic-genre"       >${results[i]["Dramatic genre"]         || ""}  </td>`;
 		output += `<td data-source="Theatrical season"   class="season"               >${results[i]["Theatrical season"]      || ""}  </td>`;
 		output += `<td data-source="Modern year"         class="modern-year"          >${results[i]["Modern year"]            || ""}  </td>`;
+		output += `<td data-source="Key reference"       class="key-reference"        >${results[i]["Key reference"]          || ""}  </td>`;
 		output += "</tr>";
 	}
 
