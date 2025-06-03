@@ -241,6 +241,7 @@ function buildSelect(data, source) {
 	VENOP.columns.push(source);
 	let output = "";
 	output += "<div style='display:inline-block; white-space: nowrap'>";
+
 	if (!((source == "Min. year") || (source == "Max. year"))) {
 		if  (source === "Date of premiere") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
@@ -275,34 +276,45 @@ function buildSelect(data, source) {
 // Librettest
 // Modern year
 
+	let sourceCount = {};
+	let vr = VENOP.results;
+	for (let i=0; i<vr.length; i++) {
+		if (vr[i][source]) {
+			sourceCount[vr[i][source]] = (sourceCount[vr[i][source]] ?? 0) + 1;
+		}
+	}
+	if (sourceCount[source] === "undefined") {
+		sourceCount[source] = 0;
+	}
+	let count = Object.keys(sourceCount).length;
 
 	if (source === "Intermezzi (comic)") {
-		output += buildSelectIntermezzi(data, source);
+		output += buildSelectIntermezzi(data, source, count);
 		output += "</div>";
 		return output;
 	}
 	if (source == "Composer") {
-		output += buildSelectPerson(data, source);
+		output += buildSelectPerson(data, source, count);
 		output += "</div>";
 		return output;
 	}
 	if (source == "Librettist") {
-		output += buildSelectPerson(data, source);
+		output += buildSelectPerson(data, source, count);
 		output += "</div>";
 		return output;
 	}
 	if (source == "Dedicatee") {
-		output += buildSelectPerson(data, source);
+		output += buildSelectPerson(data, source, count);
 		output += "</div>";
 		return output;
 	}
 	if (source == "Score") {
-		output += buildSelectScore(data, source);
+		output += buildSelectScore(data, source, count);
 		output += "</div>";
 		return output;
 	}
 	if (source == "Misc. arias") {
-		output += buildSelectScore(data, source);
+		output += buildSelectScore(data, source, count);
 		output += "</div>";
 		return output;
 	}
@@ -351,7 +363,7 @@ function buildSelect(data, source) {
 // buildSelectScore -- Extract sigla from "Score" column data.
 //
 
-function buildSelectScore(data, source) {
+function buildSelectScore(data, source, count) {
 	let holder = {};
 	for (let i=0; i<data.length; i++) {
 		let d = data[i][source];
@@ -386,6 +398,7 @@ function buildSelectScore(data, source) {
 	let output = "";
 	output += `<select onchange="doSearch()"`;
 	output += ` data-field="${source}">\n`;
+	//output += `<option class="first" value="">${source} [${count}]</option>\n`;
 	output += `<option class="first" value="">${source}</option>\n`;
 	for (let i=0; i<keys.length; i++) {
 		if (keys[i] === undefined) {
@@ -425,7 +438,7 @@ function buildSelectScore(data, source) {
 //    entries in the select menu.
 //
 
-function buildSelectIntermezzi(data, source) {
+function buildSelectIntermezzi(data, source, count) {
 	let holder = {};
 	for (let i=0; i<data.length; i++) {
 		let d = data[i][source];
@@ -466,7 +479,8 @@ function buildSelectIntermezzi(data, source) {
 	let output = "";
 	output += `<select onchange="doSearch()"`;
 	output += ` data-field="${source}">\n`;
-	output += `<option class="first" value="">${source}</option>\n`;
+	// output += `<option class="first" value="">${source} [${count}]</option>\n`;
+	output += `<option class="first" value="">${source}\n`;
 	for (let i=0; i<keys.length; i++) {
 		if (keys[i] === undefined) {
 			console.warn("KEY", i, "IS UNDEFINED");
@@ -490,7 +504,7 @@ function buildSelectIntermezzi(data, source) {
 //    they can be extracted as separate entities for the select menu.
 //
 
-function buildSelectPerson(data, source) {
+function buildSelectPerson(data, source, count) {
 	let holder = {};
 	for (let i=0; i<data.length; i++) {
 		let d = data[i][source];
@@ -531,7 +545,8 @@ function buildSelectPerson(data, source) {
 	let output = "";
 	output += `<select onchange="doSearch()"`;
 	output += ` data-field="${source}">\n`;
-	output += `<option class="first" value="">${source}</option>\n`;
+	// output += `<option class="first" value="">${source} [${count}]</option>\n`;
+	output += `<option class="first" value="">${source}\n`;
 	for (let i=0; i<keys.length; i++) {
 		if (keys[i] === undefined) {
 			console.warn("KEY", i, "IS UNDEFINED");
@@ -830,8 +845,6 @@ function filterByYearRange(results) {
 		minyear = temp;
 	}
 
-console.warn("MINYEAR", minyear, "MAXYEAR", maxyear);
-
 	let newResults = [];
 	for (let i=0; i<results.length; i++) {
 		let sortingDate = results[i]["Date of premiere"];
@@ -841,7 +854,6 @@ console.warn("MINYEAR", minyear, "MAXYEAR", maxyear);
 		let matches =  sortingDate.match(/(1\d{3})/);
 		if (matches) {
 			let year = parseInt(matches[1]);
-console.warn("YEAR", year);
 			if ((year >= minyear) && (year <= maxyear)) {
 				newResults.push(results[i]);
 			}
@@ -906,7 +918,6 @@ function filterResults(input, field, query) {
 //
 
 function freeTextSearch(string, queryArray) {
-console.log("FREETEXTSEARCH", string);
 	string = string.toLowerCase();
 	for (let i=0; i<queryArray.length; i++) {
 		if (queryArray[i] === "") {
