@@ -321,6 +321,11 @@ function buildSelect(data, source) {
 		output += "</div>";
 		return output;
 	}
+	if (source == "Calendar period") {
+		output += buildSelectCalendarPeriod(data, source, count);
+		output += "</div>";
+		return output;
+	}
 
 	let holder = {};
 	for (let i=0; i<data.length; i++) {
@@ -566,6 +571,53 @@ function buildSelectPerson(data, source, count) {
 
 //////////////////////////////
 //
+// buildSelectCalendarPeriod -- Create select menu for Calendar periods.  These fields
+//    start with a number to sort the options by, but also contain parenthetical content
+//    describing the period number.
+//
+
+function buildSelectCalendarPeriod(data, source, count) {
+	let holder = {};
+	for (let i=0; i<data.length; i++) {
+		let value = data[i][source];
+		if (!value) {
+			continue;
+		}
+		if (typeof holder[value] === "undefined") {
+			holder[value] = 1;
+		} else {
+			holder[value]++;
+		}
+	}
+
+	let keys = Object.keys(holder);
+	keys.sort((a, b) => {
+		let numA = parseInt(a);
+		let numB = parseInt(b);
+		return numA - numB;
+	});
+
+	let output = "";
+	output += `<select onchange="doSearch()"`;
+	output += ` data-field="${source}">\n`;
+	// output += `<option class="first" value="">${source} [${count}]</option>\n`;
+	output += `<option class="first" value="">${source}\n`;
+	for (let i=0; i<keys.length; i++) {
+		if (keys[i] === undefined) {
+			console.warn("KEY", i, "IS UNDEFINED");
+			continue;
+		}
+		output += `<option class="rest" value="${keys[i]}">${keys[i]} (${holder[keys[i]]})</option>\n`;
+	}
+	output += "</select>\n";
+
+	return output;
+}
+
+
+
+//////////////////////////////
+//
 // buildTextSearch --
 //
 
@@ -652,7 +704,7 @@ function displaySearchResults(results, target) {
 //
 
 function sortBy(field) {
-	if (field === "Period") {
+	if (field === "Calendar period") {
 		// sort numerically:
 		VENOP.dataArray.sort(function(a, b) {
 			let string1 = a[field];
