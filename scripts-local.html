@@ -137,6 +137,7 @@ function displaySearchFields(data, target) {
 	output += buildSelect(data, "Intermezzi (comic)");
 	output += buildSelect(data, "Dramatic genre");
 	output += buildSelect(data, "Theatrical season");
+	output += buildSelect(data, "Calendar period");
 	output += buildSelect(data, "Modern year");
 	output += buildSelect(data, "Min. year");
 	output += buildSelect(data, "Max. year");
@@ -262,6 +263,8 @@ function buildSelect(data, source) {
 		} else if  (source === "Intermezzi (comic)") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else if  (source === "Key reference") {
+			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
+		} else if  (source === "Calendar period") {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" >`;
 		} else {
 			output += `&nbsp;&nbsp;<input onclick="processColumn(event)" data-source="${source}" title="view column in table" type="checkbox" checked>`;
@@ -607,6 +610,7 @@ function displaySearchResults(results, target) {
 	output += `<th data-source="Intermezzi (comic)"     onclick="sortBy('Intermezzi (comic)')"     title="sort by Intermezzi"             class="resizable intermezzi-comic"      >Intermezzi (comic) </th>`;
 	output += `<th data-source="Dramatic genre"         onclick="sortBy('Dramatic genre')"         title="sort by Dramatic genre"         class="resizable dramatic-genre"        >Dramatic genre     </th>`;
 	output += `<th data-source="Theatrical season"      onclick="sortBy('Theatrical season')"      title="sort by Theatrical season"      class="resizable season"                >Theatrical season  </th>`;
+	output += `<th data-source="Calendar period"        onclick="sortBy('Calendar period')"        title="sort by Calendar period"        class="resizable season"                >Calendar period  </th>`;
 	output += `<th data-source="Modern year"            onclick="sortBy('Modern year')"            title="sort by Modern year"            class="resizable modern-year"           >Modern year        </th>`;
 	output += `<th data-source="Key reference"          onclick="sortBy('Key reference')"          title="sort by Key reference"          class="resizable key-reference"         >Key reference      </th>`;
 	output += "</tr>";
@@ -629,6 +633,7 @@ function displaySearchResults(results, target) {
 		output += `<td data-source="Intermezzi (comic)"  class="intermezzi-comic"     >${removeCurly(results[i]["Intermezzi (comic)"]     || "")}  </td>`;
 		output += `<td data-source="Dramatic genre"      class="dramatic-genre"       >${results[i]["Dramatic genre"]         || ""}  </td>`;
 		output += `<td data-source="Theatrical season"   class="season"               >${results[i]["Theatrical season"]      || ""}  </td>`;
+		output += `<td data-source="Calendar period"     class="season"               >${results[i]["Calendar period"]      || ""}  </td>`;
 		output += `<td data-source="Modern year"         class="modern-year"          >${results[i]["Modern year"]            || ""}  </td>`;
 		output += `<td data-source="Key reference"       class="key-reference"        >${results[i]["Key reference"]          || ""}  </td>`;
 		output += "</tr>";
