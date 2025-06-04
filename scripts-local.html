@@ -419,6 +419,11 @@ function buildSelectScore(data, source, count) {
 				name = VENOP.rismBySigla[keys[i]].Name;
 			} else {
 				console.warn("SIGLA", keys[i], "has no name");
+				if (VENOP.siglaUnknown[keys[i]] === "undefined") {
+					VENOP.siglaUnknown[keys[i]] = 1;
+				} else {
+					VENOP.siglaUnknown[keys[i]]++;
+				}
 			}
 		} else {
 			console.warn("i", i, "keys[i]", keys[i]);
